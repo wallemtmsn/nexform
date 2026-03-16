@@ -6,739 +6,10 @@
   <title>Nexform — Digital Process Engineering</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-
-  <style>
-    :root {
-      --bg:       #050810;
-      --surface:  #0b0f1a;
-      --surface2: #111827;
-      --border:   rgba(255,255,255,0.07);
-      --border2:  rgba(255,255,255,0.12);
-      --cyan:     #00d4ff;
-      --cyan-dim: rgba(0,212,255,0.12);
-      --green:    #00ff88;
-      --green-dim:rgba(0,255,136,0.1);
-      --red:      #ff4466;
-      --text:     #e2e8f0;
-      --muted:    #4a5568;
-      --muted2:   #718096;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Geist', sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* ── SCANLINES OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.08) 2px,
-        rgba(0,0,0,0.08) 4px
-      );
-      pointer-events: none;
-      z-index: 9998;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 100;
-      padding: 1.2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid transparent;
-      transition: all 0.4s;
-    }
-    nav.scrolled {
-      background: rgba(5,8,16,0.92);
-      backdrop-filter: blur(16px);
-      border-color: var(--border);
-    }
-
-    .brand {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-    .brand span { color: var(--cyan); }
-    .brand::before {
-      content: '> ';
-      color: var(--green);
-      opacity: 0.7;
-    }
-
-    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
-    .nav-links a {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted2);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--cyan); }
-
-    .btn-nav {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--bg) !important;
-      background: var(--cyan);
-      padding: 0.5rem 1.2rem;
-      border-radius: 2px;
-      letter-spacing: 0.05em;
-      transition: all 0.2s;
-      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-    }
-    .btn-nav:hover { background: var(--green); color: var(--bg) !important; }
-
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 8rem 2.5rem 5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* animated grid */
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridScroll 30s linear infinite;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-    }
-    @keyframes gridScroll {
-      from { transform: translateY(0); }
-      to   { transform: translateY(60px); }
-    }
-
-    /* glow orbs */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      pointer-events: none;
-    }
-    .orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(0,212,255,0.06), transparent 70%);
-      top: -200px; right: -100px;
-      animation: orbPulse 8s ease-in-out infinite alternate;
-    }
-    .orb-2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(0,255,136,0.05), transparent 70%);
-      bottom: -100px; left: -100px;
-      animation: orbPulse 10s ease-in-out infinite alternate-reverse;
-    }
-    @keyframes orbPulse {
-      from { opacity: 0.6; transform: scale(1); }
-      to   { opacity: 1; transform: scale(1.15); }
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--cyan);
-      border: 1px solid rgba(0,212,255,0.2);
-      padding: 0.3rem 0.8rem;
-      border-radius: 2px;
-      margin-bottom: 1.5rem;
-      background: var(--cyan-dim);
-      opacity: 0;
-      animation: fadeUp 0.6s 0.2s forwards;
-    }
-    .hero-tag::before { content: '//'; margin-right: 4px; opacity: 0.5; }
-
-    .hero-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.04em;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.35s forwards;
-    }
-    .hero-title .line-1 { color: var(--text); display: block; }
-    .hero-title .line-2 { color: var(--cyan); display: block; }
-    .hero-title .line-3 {
-      color: var(--muted2);
-      font-size: 0.7em;
-      font-weight: 400;
-      display: block;
-      margin-top: 0.2em;
-    }
-
-    .hero-desc {
-      font-size: 0.95rem;
-      line-height: 1.8;
-      color: var(--muted2);
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.5s forwards;
-      max-width: 440px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.65s forwards;
-    }
-
-    .btn-primary-nx {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 600;
-      background: var(--cyan);
-      color: var(--bg);
-      border: none;
-      padding: 0.85rem 2rem;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      letter-spacing: 0.04em;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-      transition: all 0.2s;
-    }
-    .btn-primary-nx:hover {
-      background: var(--green);
-      color: var(--bg);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(0,255,136,0.25);
-    }
-
-    .btn-ghost-nx {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--muted2);
-      border: 1px solid var(--border2);
-      background: none;
-      padding: 0.83rem 1.6rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
-    }
-    .btn-ghost-nx:hover { color: var(--cyan); border-color: var(--cyan); }
-
-    /* terminal widget */
-    .terminal {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.05);
-      opacity: 0;
-      animation: fadeIn 0.8s 0.7s forwards;
-    }
-    .terminal-bar {
-      background: var(--surface2);
-      padding: 0.75rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .dot-red   { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
-    .dot-yellow{ width: 10px; height: 10px; border-radius: 50%; background: #febc2e; }
-    .dot-green { width: 10px; height: 10px; border-radius: 50%; background: #28c840; }
-    .terminal-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-left: 0.5rem;
-    }
-    .terminal-body { padding: 1.2rem 1.4rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.9; }
-    .t-prompt { color: var(--green); }
-    .t-cmd    { color: var(--text); }
-    .t-out    { color: var(--muted2); }
-    .t-key    { color: var(--cyan); }
-    .t-val    { color: #f9a825; }
-    .t-ok     { color: var(--green); }
-    .t-err    { color: var(--red); }
-    .t-cursor {
-      display: inline-block;
-      width: 8px; height: 1em;
-      background: var(--cyan);
-      vertical-align: text-bottom;
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    .hero-metrics {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.8s forwards;
-    }
-    .metric strong {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--cyan);
-      letter-spacing: -0.04em;
-    }
-    .metric span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    /* ── SECTION ── */
-    section { padding: 7rem 2.5rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
-
-    .section-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--cyan);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .section-eyebrow::before { content: '//'; opacity: 0.5; }
-
-    .section-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(1.6rem, 3vw, 2.6rem);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      color: var(--text);
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-    .section-sub {
-      font-size: 0.95rem;
-      color: var(--muted2);
-      line-height: 1.8;
-      max-width: 480px;
-    }
-
-    /* ── HOW ── */
-    #how { background: var(--surface); }
-
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 3.5rem;
-    }
-    .how-step {
-      background: var(--surface);
-      padding: 2rem 1.8rem;
-      transition: background 0.2s;
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.5s, transform 0.5s, background 0.2s;
-    }
-    .how-step.visible { opacity: 1; transform: translateY(0); }
-    .how-step:hover { background: var(--surface2); }
-
-    .step-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      color: var(--cyan);
-      letter-spacing: 0.1em;
-      margin-bottom: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .step-num::after { content: ''; flex: 1; height: 1px; background: rgba(0,212,255,0.2); }
-    .how-step h4 {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-      letter-spacing: -0.02em;
-    }
-    .how-step p { font-size: 0.83rem; color: var(--muted2); line-height: 1.7; }
-
-    /* ── BEFORE / AFTER ── */
-    #transform { background: var(--bg); }
-
-    .ba-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    }
-    .ba-panel {
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-    .ba-panel.visible { opacity: 1; transform: translateY(0); }
-
-    .ba-panel-header {
-      padding: 0.8rem 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .ba-before .ba-panel-header { background: rgba(255,68,102,0.05); }
-    .ba-after  .ba-panel-header { background: rgba(0,212,255,0.05); }
-
-    .ba-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      border-radius: 2px;
-    }
-    .ba-before .ba-badge { background: rgba(255,68,102,0.12); color: var(--red); }
-    .ba-after  .ba-badge { background: rgba(0,212,255,0.12); color: var(--cyan); }
-
-    .ba-body { padding: 1.4rem; }
-    .ba-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.8rem;
-      padding: 0.65rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.85rem;
-      color: var(--muted2);
-    }
-    .ba-row:last-child { border-bottom: none; }
-    .ba-icon {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .ba-before .ba-icon { color: var(--red); }
-    .ba-after  .ba-icon { color: var(--green); }
-
-    /* ── SERVICES ── */
-    #services { background: var(--surface); }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 3.5rem;
-    }
-    .svc-card {
-      background: var(--surface);
-      padding: 2rem;
-      transition: background 0.2s;
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.5s, transform 0.5s, background 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .svc-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .svc-card:hover { background: var(--surface2); }
-    .svc-card:hover::before { opacity: 1; }
-    .svc-card.visible { opacity: 1; transform: translateY(0); }
-
-    .svc-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-      letter-spacing: 0.1em;
-    }
-    .svc-card h3 {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-      letter-spacing: -0.02em;
-    }
-    .svc-card p { font-size: 0.83rem; color: var(--muted2); line-height: 1.7; }
-    .svc-tag {
-      display: inline-block;
-      margin-top: 1.2rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--cyan);
-      border: 1px solid rgba(0,212,255,0.2);
-      padding: 0.2rem 0.6rem;
-      border-radius: 2px;
-      background: var(--cyan-dim);
-    }
-
-    /* ── METRICS ── */
-    #metrics { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .metric-card {
-      padding: 2.5rem 2rem;
-      border-right: 1px solid var(--border);
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-    .metric-card:last-child { border-right: none; }
-    .metric-card.visible { opacity: 1; transform: translateY(0); }
-
-    .metric-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-      color: var(--cyan);
-      letter-spacing: -0.05em;
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .metric-val .unit { font-size: 0.5em; opacity: 0.6; }
-    .metric-label { font-size: 0.78rem; color: var(--muted2); line-height: 1.5; }
-    .metric-bar {
-      height: 2px;
-      background: var(--border);
-      border-radius: 1px;
-      margin-top: 1rem;
-      overflow: hidden;
-    }
-    .metric-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--green));
-      border-radius: 1px;
-      width: 0;
-      transition: width 1.5s 0.3s ease;
-    }
-    .metric-card.visible .metric-bar-fill { width: var(--fill); }
-
-    /* ── CONTACT ── */
-    #contact { background: var(--surface); }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 5rem;
-      align-items: start;
-      margin-top: 3.5rem;
-    }
-
-    .contact-info-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 1.1rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .contact-info-item:last-child { border-bottom: none; }
-    .ci-icon {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--cyan);
-      background: var(--cyan-dim);
-      border: 1px solid rgba(0,212,255,0.2);
-      padding: 0.35rem 0.5rem;
-      border-radius: 2px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .contact-info-item strong { display: block; font-size: 0.82rem; color: var(--text); font-weight: 500; margin-bottom: 0.2rem; }
-    .contact-info-item span  { font-size: 0.78rem; color: var(--muted2); }
-
-    .contact-form {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 4px;
-      padding: 2rem;
-    }
-    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
-    .fgroup { margin-bottom: 0.9rem; }
-    .fgroup label {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted2);
-      margin-bottom: 0.4rem;
-    }
-    .fgroup input, .fgroup select, .fgroup textarea {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 2px;
-      padding: 0.7rem 0.9rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .fgroup input::placeholder, .fgroup textarea::placeholder { color: var(--muted); }
-    .fgroup input:focus, .fgroup select:focus, .fgroup textarea:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(0,212,255,0.06);
-    }
-    .fgroup select option { background: var(--surface2); }
-    .fgroup textarea { resize: vertical; min-height: 80px; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      padding: 2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    footer p {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-    .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--cyan); }
-
-    /* ── CONTACT MODAL ── */
-    .overlay {
-      position: fixed; inset: 0;
-      background: rgba(5,8,16,0.85);
-      backdrop-filter: blur(6px);
-      z-index: 500;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.25s;
-    }
-    .overlay.open { opacity: 1; pointer-events: all; }
-    .modal-box {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 4px;
-      padding: 2.5rem;
-      max-width: 480px;
-      width: 90%;
-      position: relative;
-      transform: translateY(16px);
-      transition: transform 0.25s;
-    }
-    .overlay.open .modal-box { transform: translateY(0); }
-    .modal-box h3 {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.03em;
-    }
-    .modal-box p { font-size: 0.85rem; color: var(--muted2); margin-bottom: 1.8rem; }
-    .modal-close {
-      position: absolute; top: 1rem; right: 1.2rem;
-      background: none; border: none;
-      color: var(--muted); font-size: 1.1rem; cursor: pointer;
-      transition: color 0.2s;
-    }
-    .modal-close:hover { color: var(--text); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      #hero { padding: 7rem 1.5rem 4rem; }
-      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
-      section { padding: 5rem 1.5rem; }
-      .how-grid { grid-template-columns: 1fr 1fr; }
-      .ba-grid, .contact-grid { grid-template-columns: 1fr; }
-      .services-grid { grid-template-columns: 1fr; }
-      .metrics-grid { grid-template-columns: 1fr 1fr; }
-      footer { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="navbar">
   <a href="#" class="brand">Nexform</a>
   <ul class="nav-links">
@@ -749,13 +20,11 @@
   </ul>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-grid"></div>
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="hero-inner">
-    <!-- LEFT -->
     <div>
       <p class="hero-tag">transformação digital · processos industriais</p>
       <h1 class="hero-title">
@@ -763,16 +32,10 @@
         <span class="line-2">→ sistemas digitais.</span>
         <span class="line-3">/* sem papel. sem atrito. sem perda. */</span>
       </h1>
-      <p class="hero-desc">
-        Engenharia de processos digitais para operações que não podem parar. Transformamos formulários, aprovações e fluxos em papel em sistemas rastreáveis e auditáveis.
-      </p>
+      <p class="hero-desc">Engenharia de processos digitais para operações que não podem parar. Transformamos formulários, aprovações e fluxos em papel em sistemas rastreáveis e auditáveis.</p>
       <div class="hero-actions">
-        <a href="#contact" class="btn-primary-nx">
-          <i class="bi bi-whatsapp"></i> quero um estudo de caso
-        </a>
-        <a href="#how" class="btn-ghost-nx">
-          ver arquitetura <i class="bi bi-arrow-right"></i>
-        </a>
+        <a href="#contact" class="btn-primary-nx"><i class="bi bi-whatsapp"></i> quero um estudo de caso</a>
+        <a href="#how" class="btn-ghost-nx">ver arquitetura <i class="bi bi-arrow-right"></i></a>
       </div>
       <div class="hero-metrics">
         <div class="metric">
@@ -789,8 +52,6 @@
         </div>
       </div>
     </div>
-
-    <!-- TERMINAL -->
     <div class="terminal">
       <div class="terminal-bar">
         <div class="dot-red"></div>
@@ -803,9 +64,9 @@
         <div><span class="t-out">→ Escaneando formulários manuais...</span></div>
         <div><span class="t-out">→ Identificando gargalos operacionais...</span></div>
         <div>&nbsp;</div>
-        <div><span class="t-key">PROCESSO</span>   <span class="t-val">Permissão de Trabalho</span></div>
+        <div><span class="t-key">PROCESSO</span>    <span class="t-val">Permissão de Trabalho</span></div>
         <div><span class="t-key">STATUS_ATUAL</span> <span class="t-err">MANUAL / PAPEL</span></div>
-        <div><span class="t-key">RISCO</span>      <span class="t-err">ALTO · SLA: 3 dias</span></div>
+        <div><span class="t-key">RISCO</span>       <span class="t-err">ALTO · SLA: 3 dias</span></div>
         <div>&nbsp;</div>
         <div><span class="t-prompt">$</span> <span class="t-cmd">nexform transform --mode digital</span></div>
         <div><span class="t-out">→ Modelando fluxo digital...</span></div>
@@ -813,8 +74,8 @@
         <div><span class="t-out">→ Configurando trilha de auditoria...</span></div>
         <div>&nbsp;</div>
         <div><span class="t-key">STATUS_NOVO</span>  <span class="t-ok">✓ DIGITAL / ATIVO</span></div>
-        <div><span class="t-key">SLA_ATUAL</span>   <span class="t-ok">4 horas (−97%)</span></div>
-        <div><span class="t-key">AUDITORIA</span>   <span class="t-ok">RASTREÁVEL · LGPD OK</span></div>
+        <div><span class="t-key">SLA_ATUAL</span>    <span class="t-ok">4 horas (−97%)</span></div>
+        <div><span class="t-key">AUDITORIA</span>    <span class="t-ok">RASTREÁVEL · LGPD OK</span></div>
         <div>&nbsp;</div>
         <div><span class="t-prompt">$</span> <span class="t-cursor"></span></div>
       </div>
@@ -822,10 +83,9 @@
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section id="how">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;">
       <div>
         <p class="section-eyebrow">metodologia</p>
         <h2 class="section-title">Como executamos<br>a transformação</h2>
@@ -857,10 +117,9 @@
   </div>
 </section>
 
-<!-- BEFORE / AFTER -->
 <section id="transform">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;">
       <div>
         <p class="section-eyebrow">diff / antes → depois</p>
         <h2 class="section-title">O que muda<br>na prática</h2>
@@ -898,17 +157,16 @@
   </div>
 </section>
 
-<!-- SERVICES -->
 <section id="services">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;">
       <div>
         <p class="section-eyebrow">módulos / stack</p>
         <h2 class="section-title">O que<br>entregamos</h2>
       </div>
       <p class="section-sub">Cada entrega é construída sob medida para o contexto operacional do cliente — sem templates genéricos.</p>
     </div>
-    <div class="services-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="services-grid">
       <div class="svc-card reveal">
         <p class="svc-num">module_01.form</p>
         <h3>Formulários Digitais</h3>
@@ -931,7 +189,6 @@
   </div>
 </section>
 
-<!-- METRICS -->
 <section id="metrics">
   <div class="container">
     <div class="metrics-grid">
@@ -959,12 +216,11 @@
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
   <div class="container">
     <p class="section-eyebrow">estudo de caso / digitalização</p>
     <h2 class="section-title">Seu processo ainda<br>em papel?</h2>
-    <p class="section-sub" style="margin-bottom:0;">Conta pra gente como funciona hoje. A gente analisa, desenha a solução digital e apresenta um estudo de caso sem custo.</p>
+    <p class="section-sub">Conta pra gente como funciona hoje. A gente analisa, desenha a solução digital e apresenta um estudo de caso sem custo.</p>
     <div class="contact-grid">
       <div>
         <div class="contact-info-item">
@@ -993,7 +249,7 @@
         </a>
       </div>
       <div class="contact-form">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:1.2rem;">// preencha ou fale direto pelo WhatsApp</div>
+        <p class="contact-hint">// preencha ou fale direto pelo WhatsApp</p>
         <div class="form-grid-2">
           <div class="fgroup">
             <label>Nome</label>
@@ -1019,18 +275,17 @@
         </div>
         <div class="fgroup">
           <label>Descreva brevemente o processo atual</label>
-          <textarea id="c-descricao" placeholder="// ex: nosso técnico preenche um formulário em papel com 3 vias, entrega para o gestor assinar, e o RH arquiva. Demora 2 dias e às vezes se perde..." style="min-height:100px;"></textarea>
+          <textarea id="c-descricao" placeholder="// ex: nosso técnico preenche um formulário em papel com 3 vias..." style="min-height:100px;"></textarea>
         </div>
-        <button class="btn-primary-nx" style="width:100%;justify-content:center;" onclick="enviarWhatsApp(this)">
+        <button class="btn-primary-nx" style="width:100%;justify-content:center;" onclick="enviarWhatsApp()">
           <i class="bi bi-whatsapp"></i> enviar para WhatsApp
         </button>
-        <p style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--muted);margin-top:0.8rem;text-align:center;">// abre o WhatsApp com sua mensagem já preenchida</p>
+        <p class="form-hint">// abre o WhatsApp com sua mensagem já preenchida</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <a href="#" class="brand" style="font-size:1rem;">Nexform</a>
   <p>// © 2025 Nexform · Todos os direitos reservados</p>
@@ -1041,7 +296,6 @@
   </div>
 </footer>
 
-<!-- MODAL -->
 <div class="overlay" id="contactModal" onclick="closeModalOutside(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">×</button>
@@ -1072,67 +326,15 @@
       <label>Descreva o processo (opcional)</label>
       <textarea id="m-descricao" placeholder="// como funciona hoje..."></textarea>
     </div>
-    <button class="btn-primary-nx" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="enviarWhatsAppModal(this)">
+    <button class="btn-primary-nx" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="enviarWhatsAppModal()">
       <i class="bi bi-whatsapp"></i> enviar para WhatsApp
     </button>
-    <p style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--muted);margin-top:0.8rem;text-align:center;">// abre o WhatsApp com sua mensagem já preenchida</p>
+    <p class="form-hint">// abre o WhatsApp com sua mensagem já preenchida</p>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  const WA_NUMBER = '5522998303157';
+<script src="main.js"></script>
 
-  function buildWAMessage(nome, empresa, tipo, descricao) {
-    let msg = `Olá! Vim pelo site da Nexform e gostaria de um estudo de caso.\n\n`;
-    if (nome)      msg += `*Nome:* ${nome}\n`;
-    if (empresa)   msg += `*Empresa:* ${empresa}\n`;
-    if (tipo)      msg += `*Processo:* ${tipo}\n`;
-    if (descricao) msg += `*Descrição:* ${descricao}\n`;
-    msg += `\nAguardo o retorno!`;
-    return encodeURIComponent(msg);
-  }
-
-  function enviarWhatsApp(btn) {
-    const nome      = document.getElementById('c-nome')?.value.trim() || '';
-    const empresa   = document.getElementById('c-empresa')?.value.trim() || '';
-    const tipo      = document.getElementById('c-tipo')?.value || '';
-    const descricao = document.getElementById('c-descricao')?.value.trim() || '';
-    const url = `https://wa.me/${WA_NUMBER}?text=${buildWAMessage(nome, empresa, tipo, descricao)}`;
-    window.open(url, '_blank');
-  }
-
-  function enviarWhatsAppModal(btn) {
-    const nome      = document.getElementById('m-nome')?.value.trim() || '';
-    const empresa   = document.getElementById('m-empresa')?.value.trim() || '';
-    const tipo      = document.getElementById('m-tipo')?.value || '';
-    const descricao = document.getElementById('m-descricao')?.value.trim() || '';
-    const url = `https://wa.me/${WA_NUMBER}?text=${buildWAMessage(nome, empresa, tipo, descricao)}`;
-    closeModal();
-    window.open(url, '_blank');
-  }
-
-  // Nav scroll
-  const nav = document.getElementById('navbar');
-  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
-
-  // Reveal on scroll
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
-      const idx = siblings.indexOf(entry.target);
-      setTimeout(() => entry.target.classList.add('visible'), idx * 90);
-      obs.unobserve(entry.target);
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  // Modal
-  function openModal(e) { e && e.preventDefault(); document.getElementById('contactModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function closeModal() { document.getElementById('contactModal').classList.remove('open'); document.body.style.overflow = ''; }
-  function closeModalOutside(e) { if (e.target === document.getElementById('contactModal')) closeModal(); }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-</script>
 </body>
 </html>
