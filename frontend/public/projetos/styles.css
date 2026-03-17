@@ -1,0 +1,351 @@
+/* ============================================================
+   NEXFORM — projetos/styles.css
+   Página de Portfólio / Cases
+   Estrutura:
+   0. Variáveis e Reset globais
+   1. Layout da página
+   2. Cabeçalho da página
+   3. Link de voltar
+   4. Navbar
+   5. Footer
+   6. Card em destaque (featured)
+   7. Status e header do card
+   8. Corpo do card (info + features)
+   9. Botão de acesso
+  10. Lista de funcionalidades
+  11. Seção "em breve"
+  12. Responsivo
+============================================================ */
+
+/* ── 0. VARIÁVEIS E RESET GLOBAIS ── */
+:root {
+  --bg:        #050810;
+  --surface:   #0b0f1a;
+  --surface2:  #111827;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --cyan:      #00d4ff;
+  --cyan-dim:  rgba(0,212,255,0.12);
+  --green:     #00ff88;
+  --green-dim: rgba(0,255,136,0.1);
+  --red:       #ff4466;
+  --text:      #e2e8f0;
+  --muted:     #4a5568;
+  --muted2:    #718096;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Geist', sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── 4. NAVBAR ── */
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  padding: 1.2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s;
+}
+nav.scrolled {
+  background: rgba(5,8,16,0.92);
+  backdrop-filter: blur(16px);
+  border-color: var(--border);
+}
+.brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.brand span { color: var(--cyan); }
+.brand::before { content: '> '; color: var(--green); opacity: 0.7; }
+
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--muted2);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--cyan); }
+
+.btn-nav {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--bg) !important;
+  background: var(--cyan);
+  padding: 0.5rem 1.2rem;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+.btn-nav:hover { background: var(--green); color: var(--bg) !important; }
+
+/* ── 5. FOOTER ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+footer p { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--cyan); }
+
+/* Componentes compartilhados */
+.section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--cyan);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.section-eyebrow::before { content: '//'; opacity: 0.5; }
+.section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.section-sub {
+  font-size: 0.95rem;
+  color: var(--muted2);
+  line-height: 1.8;
+  max-width: 480px;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── 1. LAYOUT DA PÁGINA ── */
+.projects-page {
+  min-height: 100vh;
+  padding: 8rem 2.5rem 5rem;
+  background: var(--bg);
+}
+
+/* ── 2. CABEÇALHO DA PÁGINA ── */
+.projects-page-header {
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── 3. LINK DE VOLTAR ── */
+.back-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--muted2);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--cyan); }
+
+/* ── 6. CARD EM DESTAQUE ── */
+.project-featured {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ── 7. STATUS E HEADER DO CARD ── */
+.project-featured-header {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.pf-status { display: flex; align-items: center; gap: 0.5rem; }
+.pf-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+.pf-status-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.pf-path { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-left: 0.5rem; }
+.pf-path span { color: var(--cyan); }
+.pf-client {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted2);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── 8. CORPO DO CARD ── */
+.project-featured-body { display: grid; grid-template-columns: 1fr 1.5fr; gap: 0; }
+.pf-info { padding: 2.5rem 2rem; border-right: 1px solid var(--border); }
+.pf-module { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+.pf-title { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1rem; }
+.pf-desc { font-size: 0.9rem; color: var(--muted2); line-height: 1.75; margin-bottom: 1.8rem; }
+.pf-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+.pf-tags span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--cyan);
+  border: 1px solid rgba(0,212,255,0.2);
+  background: var(--cyan-dim);
+  padding: 0.2rem 0.65rem;
+  border-radius: 2px;
+}
+
+/* ── 9. BOTÃO DE ACESSO ── */
+.pf-access-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: var(--cyan);
+  color: var(--bg);
+  border: none;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: all 0.2s;
+  width: 100%;
+  justify-content: center;
+}
+.pf-access-btn:hover { background: var(--green); color: var(--bg); box-shadow: 0 8px 32px rgba(0,255,136,0.25); }
+.pf-access-note { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); text-align: center; margin-top: 0.7rem; }
+
+/* ── 10. LISTA DE FUNCIONALIDADES ── */
+.pf-features { padding: 2.5rem 2rem; }
+.pf-features-title { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+.pf-feature-item { display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+.pf-feature-item:last-child { border-bottom: none; }
+.pf-feature-icon {
+  width: 2rem; height: 2rem;
+  border-radius: 3px;
+  background: var(--cyan-dim);
+  border: 1px solid rgba(0,212,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--cyan);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.pf-feature-item strong { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text); font-weight: 600; margin-bottom: 0.15rem; }
+.pf-feature-item span { font-size: 0.78rem; color: var(--muted2); line-height: 1.5; }
+
+/* ── 11. SEÇÃO EM BREVE ── */
+.coming-soon-title {
+  max-width: 1100px;
+  margin: 3rem auto 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.coming-soon-title::before { content: '//'; opacity: 0.5; }
+.coming-soon-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.coming-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.coming-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; opacity: 0.5; }
+.coming-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; letter-spacing: -0.02em; }
+.coming-card p { font-size: 0.8rem; color: var(--muted2); line-height: 1.6; }
+.coming-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  margin-bottom: 0.8rem;
+}
+
+/* ── 12. RESPONSIVO ── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .projects-page { padding: 7rem 1.5rem 4rem; }
+  .project-featured-body { grid-template-columns: 1fr; }
+  .pf-info { border-right: none; border-bottom: 1px solid var(--border); }
+  .coming-grid { grid-template-columns: 1fr; }
+  .projects-page-header { flex-direction: column; align-items: flex-start; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
