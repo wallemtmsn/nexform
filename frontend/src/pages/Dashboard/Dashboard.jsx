@@ -169,7 +169,7 @@ export default function Dashboard() {
 
       {/* ── FOOTER ── */}
       <footer className="dash-footer">
-        <span>© 2025 Nexform · Plataforma de Transformação Digital</span>
+        <span>© 2026 Nexform · CNPJ 52.715.328/0001-28 · Plataforma de Transformação Digital</span>
         <span>Desenvolvido para {empresa.nomeFantasia} — {empresa.localidade}</span>
       </footer>
 

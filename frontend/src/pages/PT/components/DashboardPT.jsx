@@ -36,6 +36,7 @@ const STATUS_CONFIG = {
 export default function DashboardPT({ ptStore, empresa, onEncerrar, onNovaPT }) {
   const [filtro, setFiltro]   = useState('todas')
   const [busca, setBusca]     = useState('')
+  const [modalConfirm, setModalConfirm] = useState(null)
 
   const dados = useMemo(() =>
     ptStore.map(r => ({ ...r, resolvedStatus: resolveStatus(r) })),
@@ -163,9 +164,28 @@ export default function DashboardPT({ ptStore, empresa, onEncerrar, onNovaPT }) 
                 <div><span className={`status-pill ${cfg.cls}`}>{cfg.label}</span></div>
                 <div className="row-actions">
                   {st !== 'encerrada' && (
-                    <button className="row-btn" title="Encerrar PT" onClick={() => { if (window.confirm(`Encerrar a PT ${r.pt}?`)) onEncerrar(r.pt) }}>
-                      <i className="bi bi-x-lg" />
-                    </button>
+                      <button className="row-btn" title="Encerrar PT" onClick={() => setModalConfirm({ pt: r.pt })}>
+                        <i className="bi bi-x-lg" />
+                      </button>
+                  )}
+                  {modalConfirm && (
+                    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setModalConfirm(null)}>
+                      <div className="modal-confirm">
+                        <div className="modal-confirm-icon">
+                          <i className="bi bi-exclamation-triangle" />
+                        </div>
+                        <h3>Encerrar Permissão de Trabalho</h3>
+                        <p>Tem certeza que deseja encerrar a <strong>{modalConfirm.pt}</strong>? Esta ação não pode ser desfeita.</p>
+                        <div className="modal-confirm-actions">
+                          <button className="btn-ghost-confirm" onClick={() => setModalConfirm(null)}>
+                            Cancelar
+                          </button>
+                          <button className="btn-danger-confirm" onClick={() => { onEncerrar(modalConfirm.pt); setModalConfirm(null) }}>
+                            <i className="bi bi-x-circle" /> Encerrar PT
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
