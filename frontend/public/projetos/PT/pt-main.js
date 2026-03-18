@@ -1,6 +1,6 @@
 /* ============================================================
    NEXFORM — pt-main.js
-   Sistema de Permissão de Trabalho — Brasil Port · Porto do Açu
+   Sistema de Permissão de Trabalho — Nexform
    Estrutura:
     1. Mapeamento APR por Tipo de Trabalho
     2. Trigger APR dinâmica ao selecionar tipo de trabalho
@@ -8,7 +8,7 @@
     4. Seletor de nível de risco
     5. Toggle checkboxes (riscos e medidas)
     6. Toggle EPIs (obrigatórios e opcionais)
-    7. Limpar formulário
+    7. Limpar formulários
     8. Coleta de dados do formulário
     9. Validação de campos obrigatórios
    10. Geração do HTML do PDF

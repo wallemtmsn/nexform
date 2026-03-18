@@ -1,0 +1,340 @@
+/* ============================================================
+   Login.css — Tela de login do Sistema de PT
+   Estrutura:
+   1. Variáveis
+   2. Container principal
+   3. Painel esquerdo (branding)
+   4. Grid de fundo
+   5. Badge do cliente
+   6. Brand / headline / desc
+   7. Lista de funcionalidades
+   8. Footer do painel esquerdo
+   9. Painel direito (formulário)
+  10. Header do formulário
+  11. Mensagem de erro
+  12. Campos do formulário
+  13. Lembrar / esqueci
+  14. Botão de login
+  15. Divider e hint de demo
+  16. Responsivo
+============================================================ */
+
+/* ── 1. VARIÁVEIS ── */
+:root {
+  --navy:   #0d1f3c;
+  --blue:   #1a3d6e;
+  --accent: #2d6be4;
+  --light:  #f4f7fc;
+  --white:  #ffffff;
+  --text:   #1c2b45;
+  --muted:  #6b7f9a;
+  --border: #dce5f0;
+  --green:  #16a34a;
+  --red:    #dc2626;
+}
+
+/* ── 2. CONTAINER PRINCIPAL ── */
+.login-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  font-family: 'Epilogue', sans-serif;
+}
+
+/* ── 3. PAINEL ESQUERDO ── */
+.login-left {
+  flex: 1;
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.login-left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(45,107,228,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 80% at 20% 80%, rgba(45,107,228,0.1), transparent);
+  pointer-events: none;
+}
+
+.login-left-top {
+  position: relative;
+  z-index: 1;
+}
+.login-left-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── 4. GRID DE FUNDO ── */
+.login-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── 5. BADGE DO CLIENTE ── */
+.login-client-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 3px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 2rem;
+}
+.login-badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+  flex-shrink: 0;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.login-client-badge span { font-size: 0.75rem; color: rgba(255,255,255,0.55); }
+.login-client-badge strong { color: #fff; font-weight: 500; }
+
+/* ── 6. BRAND / HEADLINE / DESC ── */
+.login-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.login-brand span { color: var(--accent); }
+.login-brand-sub {
+  display: block;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+  margin-bottom: 2.5rem;
+}
+
+.login-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.login-headline em { font-style: italic; color: var(--accent); }
+
+.login-desc {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  max-width: 360px;
+  margin-bottom: 2.5rem;
+}
+
+/* ── 7. LISTA DE FUNCIONALIDADES ── */
+.login-features { display: flex; flex-direction: column; gap: 0.75rem; }
+.login-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+}
+.login-feature i {
+  width: 1.6rem; height: 1.6rem;
+  background: rgba(45,107,228,0.15);
+  border: 1px solid rgba(45,107,228,0.25);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ── 8. FOOTER DO PAINEL ESQUERDO ── */
+.login-footer-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ── 9. PAINEL DIREITO ── */
+.login-right {
+  width: 420px;
+  flex-shrink: 0;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.5rem 3rem;
+}
+
+/* ── 10. HEADER DO FORMULÁRIO ── */
+.login-form-header { margin-bottom: 2rem; }
+.login-form-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+.login-form-header p { font-size: 0.85rem; color: var(--muted); }
+
+/* ── 11. MENSAGEM DE ERRO ── */
+.login-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(220,38,38,0.06);
+  border: 1px solid rgba(220,38,38,0.2);
+  border-radius: 3px;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.82rem;
+  color: var(--red);
+  margin-bottom: 1rem;
+}
+
+/* ── 12. CAMPOS DO FORMULÁRIO ── */
+.login-fgroup { margin-bottom: 1.1rem; }
+.login-fgroup label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.login-input-wrap { position: relative; }
+.login-input-wrap > i {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+.login-fgroup input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.75rem 0.85rem 0.75rem 2.4rem;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.login-fgroup input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(45,107,228,0.08);
+}
+.login-toggle-pass {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 0;
+  transition: color 0.2s;
+}
+.login-toggle-pass:hover { color: var(--navy); }
+
+/* ── 13. LEMBRAR / ESQUECI ── */
+.login-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.4rem;
+}
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.login-remember input[type='checkbox'] { accent-color: var(--accent); cursor: pointer; }
+.login-forgot {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.login-forgot:hover { color: var(--blue); }
+
+/* ── 14. BOTÃO DE LOGIN ── */
+.btn-login {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.9rem;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s, transform 0.15s;
+  margin-bottom: 1.5rem;
+}
+.btn-login:hover   { background: var(--blue); transform: translateY(-1px); }
+.btn-login:disabled { opacity: 0.7; cursor: default; transform: none; }
+
+/* ── 15. DIVIDER E HINT DE DEMO ── */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+.login-divider::before,
+.login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.login-divider span { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+
+.login-demo-hint {
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.75rem 1rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.login-demo-hint strong { color: var(--navy); font-weight: 500; }
+
+/* ── 16. RESPONSIVO ── */
+@media (max-width: 768px) {
+  .login-left  { display: none; }
+  .login-right { width: 100%; padding: 2.5rem 1.5rem; }
+}

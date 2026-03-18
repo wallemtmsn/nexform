@@ -1,3 +1,8 @@
+// ============================================================
+// src/main.jsx
+// Ponto de entrada da aplicação React
+// ============================================================
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'

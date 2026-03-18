@@ -9,7 +9,14 @@
 ============================================================ */
 
 /* ── 1. CONFIGURAÇÃO ── */
+/* ── 6. LINKS WHATSAPP DIRETOS ── */
 const WA_NUMBER = '5522974047856';
+const WA_MSG = encodeURIComponent('Olá! Vim pelo site da Nexform e gostaria de um estudo de caso para digitalizar meu processo.');
+
+const waDirectLink = document.getElementById('wa-direct-link');
+if (waDirectLink) {
+  waDirectLink.href = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
+}
 
 /* ── 2. NAVBAR — muda aparência ao rolar ── */
 const nav = document.getElementById('navbar');
