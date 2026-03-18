@@ -1,0 +1,20 @@
+/* PT.css */
+:root {
+  --navy:   #0d1f3c;
+  --blue:   #1a3d6e;
+  --accent: #2d6be4;
+  --light:  #f4f7fc;
+  --white:  #ffffff;
+  --text:   #1c2b45;
+  --muted:  #6b7f9a;
+  --border: #dce5f0;
+  --green:  #16a34a;
+  --red:    #dc2626;
+  --yellow: #d97706;
+}
+
+.pt-screen {
+  min-height: 100vh;
+  background: var(--light);
+  font-family: 'Epilogue', sans-serif;
+}

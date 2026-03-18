@@ -6,21 +6,21 @@
 
 const empresas = [
   {
-    id: 'brasilport',
-    nomeFantasia: 'Brasil Port',
-    nomeCompleto: 'Brasil Port Operações Portuárias Ltda.',
-    localidade: 'Porto do Açu, RJ',
-    cor: '#2d6be4',          // cor de destaque da empresa
+    id: 'nexform',
+    nomeFantasia: 'Nexform',
+    nomeCompleto: 'Nexform Plataforma de Transformação Digital',
+    cnpj: '52.715.328/0001-28',
+    localidade: 'Rio de Janeiro, RJ',
+    cor: '#2d6be4',
     ferramentas: [
       {
         id: 'emissao-pt',
         nome: 'Emissão de Permissão de Trabalho',
         descricao: 'Emita, controle e arquive PTs com análise de riscos automática e geração de PDF.',
         icone: 'bi-file-earmark-check',
-        status: 'ativa',         // 'ativa' | 'manutencao' | 'inativa'
+        status: 'ativa',
         rota: '/pt',
       },
-      // Adicionar novas ferramentas aqui conforme forem contratadas
     ],
     usuarios: [
       {
@@ -33,17 +33,14 @@ const empresas = [
   },
 ]
 
-// Retorna a empresa pelo id
 export function getEmpresa(id) {
   return empresas.find(e => e.id === id) || null
 }
 
-// Retorna a empresa padrão (usada enquanto não temos subdomínio)
 export function getEmpresaPadrao() {
   return empresas[0]
 }
 
-// Valida login de um usuário dentro de uma empresa
 export function validarLogin(empresa, email, senha) {
   const usuario = empresa.usuarios.find(
     u => u.email === email.trim().toLowerCase() && u.senha === senha

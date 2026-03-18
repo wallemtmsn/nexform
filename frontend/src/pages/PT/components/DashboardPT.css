@@ -1,0 +1,128 @@
+/* DashboardPT.css */
+.dash-pt-wrap {
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.dash-pt-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+}
+.dash-pt-header h1 {
+  font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700;
+  color: var(--navy); letter-spacing: -0.02em;
+}
+.dash-pt-header p { font-size: 0.83rem; color: var(--muted); margin-top: 0.2rem; }
+
+/* Stats */
+.dash-pt-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.8rem;
+}
+.stat-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 4px;
+  padding: 1.3rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+}
+.stat-icon {
+  width: 2.6rem; height: 2.6rem; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+}
+.stat-icon--blue   { background: rgba(45,107,228,0.1);  color: var(--accent); }
+.stat-icon--green  { background: rgba(22,163,74,0.1);   color: var(--green); }
+.stat-icon--yellow { background: rgba(217,119,6,0.1);   color: var(--yellow); }
+.stat-icon--red    { background: rgba(220,38,38,0.1);   color: var(--red); }
+.stat-val   { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 0.15rem; }
+.stat-label { font-size: 0.75rem; color: var(--muted); }
+
+/* Filtros */
+.dash-pt-filters {
+  display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;
+}
+.filter-btn {
+  font-family: 'Epilogue', sans-serif; font-size: 0.78rem; font-weight: 500;
+  padding: 0.4rem 1rem; border-radius: 3px; border: 1px solid var(--border);
+  background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.15s;
+}
+.filter-btn:hover        { border-color: var(--accent); color: var(--accent); }
+.filter-btn--active      { background: var(--accent); border-color: var(--accent); color: #fff; }
+.dash-search { margin-left: auto; position: relative; }
+.dash-search i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.8rem; pointer-events: none; }
+.dash-search input {
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 0.4rem 0.8rem 0.4rem 2.1rem;
+  font-family: 'Epilogue', sans-serif; font-size: 0.8rem; color: var(--text);
+  outline: none; width: 220px; transition: border-color 0.2s;
+}
+.dash-search input:focus { border-color: var(--accent); }
+
+/* Tabela */
+.pt-table { background: var(--white); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.pt-table-head {
+  display: grid; grid-template-columns: 110px 1fr 1fr 120px 80px 110px 90px 50px;
+  padding: 0.7rem 1.2rem; background: var(--light); border-bottom: 1px solid var(--border);
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); gap: 0.5rem;
+}
+.pt-row {
+  display: grid; grid-template-columns: 110px 1fr 1fr 120px 80px 110px 90px 50px;
+  padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--border);
+  align-items: center; gap: 0.5rem; transition: background 0.15s; cursor: default;
+}
+.pt-row:last-child { border-bottom: none; }
+.pt-row:hover { background: var(--light); }
+.pt-row--vencendo { background: rgba(217,119,6,0.03); }
+.pt-row--vencendo:hover { background: rgba(217,119,6,0.07); }
+.pt-row--vencida  { background: rgba(220,38,38,0.03); }
+.pt-row--vencida:hover  { background: rgba(220,38,38,0.06); }
+
+.pt-cell-num { font-family: 'Epilogue', monospace; font-size: 0.8rem; font-weight: 600; color: var(--accent); }
+.pt-cell      { font-size: 0.83rem; color: var(--text); }
+.pt-cell--muted { color: var(--muted); font-size: 0.78rem; }
+.pt-cell--sm  { font-size: 0.75rem; }
+
+.validade      { font-size: 0.78rem; font-weight: 500; display: flex; align-items: center; gap: 0.3rem; }
+.validade--ok  { color: var(--muted); }
+.validade--warn{ color: var(--yellow); }
+.validade--expired { color: var(--red); }
+
+.status-pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.65rem; border-radius: 20px; }
+.status-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; }
+.status-ativa::before     { background: var(--green); }
+.status-ativa             { background: rgba(22,163,74,0.1);  color: var(--green); }
+.status-encerrada::before { background: var(--muted); }
+.status-encerrada         { background: rgba(107,127,154,0.1); color: var(--muted); }
+.status-vencida::before   { background: var(--red); }
+.status-vencida           { background: rgba(220,38,38,0.1);  color: var(--red); }
+.status-vencendo::before  { background: var(--yellow); }
+.status-vencendo          { background: rgba(217,119,6,0.1);  color: var(--yellow); }
+
+.row-actions { display: flex; gap: 0.35rem; }
+.row-btn {
+  width: 1.8rem; height: 1.8rem; border-radius: 3px; border: 1px solid var(--border);
+  background: var(--white); color: var(--muted); font-size: 0.75rem;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s;
+}
+.row-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.empty-state { text-align: center; padding: 3.5rem 1.5rem; color: var(--muted); }
+.empty-state i { font-size: 2rem; margin-bottom: 0.8rem; display: block; opacity: 0.4; }
+.empty-state p { font-size: 0.88rem; }
+
+/* Botão reutilizado */
+.btn-primary-pt {
+  font-family: 'Epilogue', sans-serif; font-size: 0.83rem; font-weight: 500;
+  padding: 0.75rem 1.8rem; border-radius: 3px; border: none;
+  background: var(--accent); color: #fff; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;
+}
+.btn-primary-pt:hover { background: var(--blue); transform: translateY(-1px); }
+
+@media (max-width: 900px) {
+  .dash-pt-stats { grid-template-columns: 1fr 1fr; }
+  .pt-table-head, .pt-row { grid-template-columns: 90px 1fr 80px 70px; }
+  .pt-table-head > *:nth-child(3),
+  .pt-table-head > *:nth-child(4),
+  .pt-table-head > *:nth-child(6),
+  .pt-row > *:nth-child(3),
+  .pt-row > *:nth-child(4),
+  .pt-row > *:nth-child(6) { display: none; }
+}
