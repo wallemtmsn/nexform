@@ -1,0 +1,138 @@
+/* DashboardChecklist.css */
+.ck-dash-wrap {
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.ck-dash-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+}
+.ck-dash-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.02em;
+}
+.ck-dash-header p { font-size: 0.83rem; color: var(--muted); margin-top: 0.2rem; }
+
+/* Stats */
+.ck-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; margin-bottom: 1.8rem;
+}
+.ck-stat-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.3rem 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.ck-stat-icon {
+  width: 2.6rem; height: 2.6rem; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.ck-stat-icon--blue   { background: rgba(45,107,228,0.1);  color: var(--accent); }
+.ck-stat-icon--yellow { background: rgba(217,119,6,0.1);   color: var(--yellow); }
+.ck-stat-icon--green  { background: rgba(22,163,74,0.1);   color: var(--green); }
+.ck-stat-icon--red    { background: rgba(220,38,38,0.1);   color: var(--red); }
+.ck-stat-val   { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 0.15rem; }
+.ck-stat-label { font-size: 0.75rem; color: var(--muted); }
+
+/* Alerta líder */
+.ck-lider-alert {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: rgba(217,119,6,0.07); border: 1px solid rgba(217,119,6,0.25);
+  border-radius: 4px; padding: 0.9rem 1.2rem;
+  font-size: 0.83rem; color: #92400e; margin-bottom: 1.2rem;
+}
+.ck-lider-alert i { color: var(--yellow); font-size: 1rem; flex-shrink: 0; }
+
+/* Filtros */
+.ck-filters {
+  display: flex; align-items: center; gap: 0.8rem;
+  margin-bottom: 1rem; flex-wrap: wrap;
+}
+.ck-filter-btn {
+  font-family: 'Epilogue', sans-serif; font-size: 0.78rem; font-weight: 500;
+  padding: 0.4rem 1rem; border-radius: 3px; border: 1px solid var(--border);
+  background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.15s;
+}
+.ck-filter-btn:hover      { border-color: var(--accent); color: var(--accent); }
+.ck-filter-btn--active    { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.ck-search { margin-left: auto; position: relative; }
+.ck-search i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.8rem; pointer-events: none; }
+.ck-search input {
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 0.4rem 0.8rem 0.4rem 2.1rem;
+  font-family: 'Epilogue', sans-serif; font-size: 0.8rem; color: var(--text);
+  outline: none; width: 260px; transition: border-color 0.2s;
+}
+.ck-search input:focus { border-color: var(--accent); }
+
+/* Tabela */
+.ck-table { background: var(--white); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.ck-table-head {
+  display: grid;
+  grid-template-columns: 105px 120px 130px 100px 100px 75px 120px 110px 1fr;
+  padding: 0.7rem 1.2rem; background: var(--light); border-bottom: 1px solid var(--border);
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); gap: 0.5rem;
+}
+.ck-row {
+  display: grid;
+  grid-template-columns: 105px 120px 130px 100px 100px 75px 120px 110px 1fr;
+  padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--border);
+  align-items: center; gap: 0.5rem; transition: background 0.15s;
+}
+.ck-row:last-child { border-bottom: none; }
+.ck-row:hover { background: var(--light); }
+.ck-row--nc { background: rgba(220,38,38,0.02); }
+.ck-row--nc:hover { background: rgba(220,38,38,0.05); }
+
+.ck-cell-id { font-family: 'Epilogue', monospace; font-size: 0.8rem; font-weight: 600; color: var(--accent); }
+.ck-cell      { font-size: 0.83rem; color: var(--text); }
+.ck-cell--muted { color: var(--muted); font-size: 0.78rem; }
+
+.ck-itens-pill { font-size: 0.75rem; color: var(--muted); background: var(--light); padding: 0.2rem 0.5rem; border-radius: 3px; border: 1px solid var(--border); }
+.ck-nc-badge  { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; font-weight: 600; color: var(--red); }
+.ck-ok-badge  { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; font-weight: 600; color: var(--green); }
+
+.ck-status-pill {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.65rem; border-radius: 20px;
+}
+.status-aguardando { background: rgba(217,119,6,0.1);  color: var(--yellow); }
+.status-aprovado   { background: rgba(22,163,74,0.1);  color: var(--green); }
+.status-reprovado  { background: rgba(220,38,38,0.1);  color: var(--red); }
+
+.ck-row-actions { display: flex; gap: 0.4rem; }
+.ck-aprovar-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Epilogue', sans-serif; font-size: 0.75rem; font-weight: 600;
+  background: var(--accent); color: #fff; border: none;
+  padding: 0.4rem 0.9rem; border-radius: 3px; cursor: pointer; transition: all 0.2s;
+}
+.ck-aprovar-btn:hover { background: var(--blue); }
+
+.ck-empty { text-align: center; padding: 3.5rem 1.5rem; color: var(--muted); }
+.ck-empty i { font-size: 2rem; margin-bottom: 0.8rem; display: block; opacity: 0.4; }
+.ck-empty p { font-size: 0.88rem; }
+
+/* Botão primário */
+.ck-btn-primary {
+  font-family: 'Epilogue', sans-serif; font-size: 0.83rem; font-weight: 500;
+  padding: 0.75rem 1.8rem; border-radius: 3px; border: none;
+  background: var(--accent); color: #fff; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;
+}
+.ck-btn-primary:hover { background: var(--blue); transform: translateY(-1px); }
+
+@media (max-width: 900px) {
+  .ck-stats { grid-template-columns: 1fr 1fr; }
+  .ck-table-head, .ck-row { grid-template-columns: 100px 1fr 80px 100px 80px; }
+  .ck-table-head > *:nth-child(3),
+  .ck-table-head > *:nth-child(4),
+  .ck-table-head > *:nth-child(8),
+  .ck-row > *:nth-child(3),
+  .ck-row > *:nth-child(4),
+  .ck-row > *:nth-child(8) { display: none; }
+}

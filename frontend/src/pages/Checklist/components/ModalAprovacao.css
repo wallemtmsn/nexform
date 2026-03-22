@@ -1,0 +1,127 @@
+/* ModalAprovacao.css */
+.modal-ap-overlay {
+  position: fixed; inset: 0;
+  background: rgba(13,31,60,0.65);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+
+.modal-ap-box {
+  background: var(--white);
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(13,31,60,0.2);
+}
+
+/* Header */
+.modal-ap-header {
+  display: flex; align-items: flex-start; gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.modal-ap-icon {
+  width: 2.8rem; height: 2.8rem; border-radius: 6px;
+  background: rgba(22,163,74,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: var(--green); flex-shrink: 0;
+}
+.modal-ap-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 700; color: var(--navy);
+  margin-bottom: 0.2rem;
+}
+.modal-ap-header p { font-size: 0.82rem; color: var(--muted); }
+
+/* Resumo */
+.modal-ap-resumo {
+  background: var(--light); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+}
+.modal-ap-resumo-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.35rem 0; border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.modal-ap-resumo-row:last-child { border-bottom: none; }
+.modal-ap-resumo-row span { color: var(--muted); }
+.modal-ap-resumo-row strong { color: var(--navy); font-weight: 600; }
+.text-red   { color: var(--red) !important; }
+.text-green { color: var(--green) !important; }
+
+.modal-ap-obs {
+  margin-top: 0.6rem; padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+.modal-ap-obs span { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.modal-ap-obs p { font-size: 0.8rem; color: var(--navy); margin-top: 0.3rem; line-height: 1.5; }
+
+/* Erro */
+.modal-ap-erro {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.2);
+  border-radius: 3px; padding: 0.6rem 0.85rem;
+  font-size: 0.82rem; color: var(--red); margin-bottom: 1rem;
+}
+
+/* Checkbox confirmação */
+.modal-ap-check {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  margin-bottom: 1.2rem; cursor: pointer; user-select: none;
+}
+.modal-ap-check input[type='checkbox'] { accent-color: var(--accent); margin-top: 3px; flex-shrink: 0; }
+.modal-ap-check span { font-size: 0.82rem; color: var(--text); line-height: 1.5; }
+
+/* Senha */
+.modal-ap-senha-wrap { margin-bottom: 1.5rem; }
+.modal-ap-senha-wrap label {
+  display: block; font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0.4rem;
+}
+.modal-ap-senha-input { position: relative; margin-bottom: 0.6rem; }
+.modal-ap-senha-input i {
+  position: absolute; left: 0.85rem; top: 50%;
+  transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; pointer-events: none;
+}
+.modal-ap-senha-input input {
+  width: 100%; border: 1px solid var(--border); border-radius: 3px;
+  padding: 0.75rem 0.85rem 0.75rem 2.4rem;
+  font-family: 'Epilogue', sans-serif; font-size: 0.9rem; color: var(--text);
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.modal-ap-senha-input input:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,107,228,0.08);
+}
+.modal-ap-assinante {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.78rem; color: var(--muted);
+}
+.modal-ap-assinante i { color: var(--green); }
+.modal-ap-assinante strong { color: var(--navy); }
+
+/* Ações */
+.modal-ap-actions {
+  display: flex; gap: 0.7rem; justify-content: flex-end;
+  padding-top: 1rem; border-top: 1px solid var(--border);
+}
+.modal-ap-btn-cancel {
+  font-family: 'Epilogue', sans-serif; font-size: 0.83rem; font-weight: 500;
+  padding: 0.7rem 1.5rem; border-radius: 3px;
+  border: 1px solid var(--border); background: var(--white);
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.modal-ap-btn-cancel:hover { border-color: var(--navy); color: var(--navy); }
+
+.modal-ap-btn-confirm {
+  font-family: 'Epilogue', sans-serif; font-size: 0.83rem; font-weight: 600;
+  padding: 0.7rem 1.5rem; border-radius: 3px; border: none;
+  background: var(--green); color: #fff; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;
+}
+.modal-ap-btn-confirm:hover { background: #15803d; transform: translateY(-1px); }

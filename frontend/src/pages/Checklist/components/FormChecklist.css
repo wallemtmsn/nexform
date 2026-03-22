@@ -1,0 +1,184 @@
+/* FormChecklist.css */
+.form-ck-wrap {
+  max-width: 900px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* Header */
+.form-ck-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+}
+.form-ck-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; font-weight: 700; color: var(--navy); letter-spacing: -0.02em;
+}
+.form-ck-header p { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+.ck-numero { text-align: right; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.ck-numero strong { display: block; font-size: 1rem; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; font-family: 'Epilogue', monospace; margin-top: 0.2rem; }
+
+/* Barra de progresso */
+.form-ck-progress {
+  height: 6px; background: var(--border); border-radius: 3px;
+  margin-bottom: 0.6rem; position: relative; overflow: hidden;
+}
+.form-ck-progress-bar {
+  height: 100%; background: var(--accent); border-radius: 3px;
+  transition: width 0.3s ease;
+}
+.form-ck-progress + span {
+  display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 1.2rem; text-align: right;
+}
+
+/* Erro */
+.form-ck-erro {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.2);
+  border-radius: 3px; padding: 0.9rem 1rem;
+  font-size: 0.82rem; color: var(--red); margin-bottom: 1.2rem;
+}
+
+/* Card */
+.ck-card { background: var(--white); border: 1px solid var(--border); border-radius: 5px; margin-bottom: 1.2rem; overflow: hidden; }
+.ck-card-header {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.85rem 1.5rem; background: var(--light); border-bottom: 1px solid var(--border);
+}
+.ck-card-header i { color: var(--accent); font-size: 0.95rem; }
+.ck-card-header h2 {
+  font-family: 'Epilogue', sans-serif; font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy);
+}
+.ck-cat-count {
+  margin-left: auto; font-size: 0.7rem; color: var(--muted);
+  background: var(--border); padding: 0.15rem 0.5rem; border-radius: 20px;
+}
+.ck-card-body { padding: 1.5rem; }
+.ck-card-body--itens { padding: 0; }
+
+/* Grid */
+.ck-grid { display: grid; gap: 1rem; }
+.ck-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+/* Campos */
+.ck-fgroup { margin-bottom: 0; }
+.ck-fgroup label { display: block; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+.ck-fgroup .req { color: var(--red); }
+.ck-fgroup input,
+.ck-fgroup select,
+.ck-fgroup textarea {
+  width: 100%; border: 1px solid var(--border); border-radius: 3px;
+  padding: 0.65rem 0.85rem; font-family: 'Epilogue', sans-serif;
+  font-size: 0.88rem; color: var(--text); background: var(--white);
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ck-fgroup input:focus,
+.ck-fgroup select:focus,
+.ck-fgroup textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,107,228,0.08); }
+.ck-fgroup textarea { resize: vertical; }
+
+/* Observações box */
+.ck-obs-box {
+  background: rgba(217,119,6,0.05); border: 1px solid rgba(217,119,6,0.2);
+  border-radius: 4px; padding: 1rem 1.2rem; margin-bottom: 1rem;
+}
+.ck-obs-titulo {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--yellow); margin-bottom: 0.6rem;
+}
+.ck-obs-lista { padding-left: 1.2rem; }
+.ck-obs-lista li { font-size: 0.8rem; color: var(--text); line-height: 1.6; margin-bottom: 0.3rem; }
+
+/* Legenda */
+.ck-legenda {
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; padding: 0.75rem 1.2rem; margin-bottom: 1.2rem;
+  font-size: 0.8rem; color: var(--muted);
+}
+.ck-legenda strong { color: var(--navy); }
+.ck-legenda-critico { display: flex; align-items: center; gap: 0.4rem; color: var(--red); margin-left: auto; font-size: 0.75rem; }
+
+/* Cabeçalho da tabela de itens */
+.ck-itens-head {
+  display: grid; grid-template-columns: 60px 1fr 52px 52px;
+  padding: 0.6rem 1.2rem; background: var(--navy);
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.7); gap: 0.5rem; align-items: center;
+}
+.ck-itens-head--na {
+  grid-template-columns: 60px 1fr 52px 52px 52px;
+}
+.ck-itens-head-num { text-align: center; }
+.ck-itens-head-opt { text-align: center; }
+
+/* Linha de item */
+.ck-item-row {
+  display: grid; grid-template-columns: 60px 1fr 52px 52px;
+  padding: 0.7rem 1.2rem; border-bottom: 1px solid var(--border);
+  align-items: center; gap: 0.5rem; transition: background 0.15s;
+}
+.ck-item-row--has-na {
+  grid-template-columns: 60px 1fr 52px 52px 52px;
+}
+
+.ck-item-num {
+  text-align: center; font-size: 0.78rem; font-weight: 600;
+  color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+}
+.ck-critico-badge {
+  font-size: 0.58rem; font-weight: 700; color: var(--red);
+  letter-spacing: 0;
+}
+.ck-item-desc { font-size: 0.82rem; color: var(--text); line-height: 1.5; }
+.ck-item-opt  { display: flex; justify-content: center; }
+
+/* Botões C / NC / NA */
+.ck-opt-btn {
+  width: 36px; height: 28px; border-radius: 3px;
+  font-family: 'Epilogue', sans-serif; font-size: 0.72rem; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border);
+  background: var(--white); color: var(--muted);
+}
+.ck-opt-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.ck-opt-btn--c.ck-opt-btn--selected    { background: var(--green);  border-color: var(--green);  color: #fff; }
+.ck-opt-btn--nc.ck-opt-btn--selected   { background: var(--red);    border-color: var(--red);    color: #fff; }
+.ck-opt-btn--na.ck-opt-btn--selected   { background: var(--muted);  border-color: var(--muted);  color: #fff; }
+
+/* Campo de obs do item NC */
+.ck-item-obs {
+  grid-column: 2 / -1; margin-top: 0.3rem;
+}
+.ck-item-obs input {
+  width: 100%; border: 1px solid rgba(220,38,38,0.3); border-radius: 3px;
+  padding: 0.5rem 0.75rem; font-family: 'Epilogue', sans-serif;
+  font-size: 0.82rem; color: var(--text); background: rgba(220,38,38,0.03);
+  outline: none; transition: border-color 0.2s;
+}
+.ck-item-obs input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,0.08); }
+.ck-item-obs input::placeholder { color: rgba(220,38,38,0.5); }
+
+/* Assinatura */
+.ck-assinatura-box { margin-top: 1rem; }
+.ck-sig-field {
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 0.8rem 1rem; max-width: 320px;
+}
+.ck-sig-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+.ck-sig-value { font-size: 0.88rem; color: var(--navy); font-weight: 500; }
+
+/* Ações */
+.form-ck-actions {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.form-ck-progress-info { font-size: 0.82rem; }
+.text-warn { color: var(--yellow); display: flex; align-items: center; gap: 0.4rem; }
+.text-ok   { color: var(--green);  display: flex; align-items: center; gap: 0.4rem; }
+
+@media (max-width: 680px) {
+  .ck-grid-3 { grid-template-columns: 1fr 1fr; }
+  .form-ck-header { flex-direction: column; gap: 0.8rem; align-items: flex-start; }
+}

@@ -1,0 +1,89 @@
+/* TopbarChecklist.css */
+.ck-topbar {
+  background: var(--navy);
+  padding: 0.9rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 1rem;
+}
+.ck-topbar-left  { display: flex; align-items: center; gap: 1.4rem; }
+.ck-topbar-center { display: flex; align-items: center; gap: 0.25rem; }
+.ck-topbar-right  { display: flex; align-items: center; gap: 0.8rem; }
+
+.ck-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+.ck-brand span { color: var(--accent); }
+
+.ck-topbar-sep { width: 1px; height: 1.4rem; background: rgba(255,255,255,0.12); }
+
+.ck-client { display: flex; flex-direction: column; gap: 0.05rem; }
+.ck-client-label {
+  font-size: 0.58rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+}
+.ck-client-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem; font-weight: 600; color: #fff;
+}
+.ck-client-location {
+  font-family: 'Epilogue', sans-serif;
+  font-size: 0.75rem; font-weight: 400; color: rgba(255,255,255,0.4);
+}
+
+.ck-tab {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.45rem 1rem; border-radius: 3px;
+  font-size: 0.8rem; font-weight: 500;
+  color: rgba(255,255,255,0.5); cursor: pointer;
+  border: none; background: none;
+  font-family: 'Epilogue', sans-serif; transition: all 0.2s;
+}
+.ck-tab:hover     { color: #fff; background: rgba(255,255,255,0.06); }
+.ck-tab--active   { color: #fff; background: rgba(255,255,255,0.1); }
+
+.ck-tab-badge {
+  background: var(--yellow);
+  color: #fff; font-size: 0.6rem; font-weight: 700;
+  padding: 1px 5px; border-radius: 20px;
+  min-width: 16px; text-align: center;
+}
+
+.ck-perfil-badge {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: rgba(45,107,228,0.2);
+  border: 1px solid rgba(45,107,228,0.4);
+  border-radius: 3px; padding: 0.3rem 0.7rem;
+  font-size: 0.72rem; font-weight: 600;
+  color: #5b9cf6; font-family: 'Epilogue', sans-serif;
+}
+
+.ck-user-pill {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 3px; padding: 0.4rem 0.9rem;
+  font-size: 0.78rem; color: rgba(255,255,255,0.7);
+}
+.ck-user-pill i { color: var(--accent); }
+
+.ck-back-btn {
+  background: none; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 3px; padding: 0.4rem 0.7rem;
+  color: rgba(255,255,255,0.5); cursor: pointer;
+  font-size: 0.85rem; transition: all 0.2s;
+}
+.ck-back-btn:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+@media (max-width: 900px) {
+  .ck-topbar { flex-wrap: wrap; }
+  .ck-client { display: none; }
+}

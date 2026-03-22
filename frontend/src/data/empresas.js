@@ -21,6 +21,14 @@ const empresas = [
         status: 'ativa',
         rota: '/pt',
       },
+      {
+        id: 'checklist-empilhadeira',
+        nome: 'Checklist de Empilhadeira',
+        descricao: 'Checklist diário de inspeção de empilhadeira com aprovação do líder e geração de PDF.',
+        icone: 'bi-clipboard-check',
+        status: 'ativa',
+        rota: '/checklist',
+      },
     ],
     usuarios: [
       {
@@ -28,6 +36,14 @@ const empresas = [
         senha: 'nexforms123',
         nome: 'Carlos Eduardo',
         cargo: 'Técnico de Segurança',
+        perfil: 'lider', // 'operador' | 'lider'
+      },
+      {
+        email: 'operador@nexforms.com.br',
+        senha: 'operador123',
+        nome: 'João Ferreira',
+        cargo: 'Operador de Empilhadeira',
+        perfil: 'operador',
       },
     ],
   },
