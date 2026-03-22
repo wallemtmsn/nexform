@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>Nexform - Transformação Digital</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700;800&family=Space+Grotesk:wght@300;400;700&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #050a0f;
+  }
+
+  canvas {
+    position: absolute;
+    inset: 0;
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+  }
+
+  /* Grid overlay */
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,180,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,180,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridShift 20s linear infinite;
+  }
+
+  @keyframes gridShift {
+    from { background-position: 0 0; }
+    to   { background-position: 60px 60px; }
+  }
+
+  /* Ambient light blobs */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+  }
+  .blob-1 { width: 700px; height: 500px; background: rgba(0,255,160,0.07); top: -100px; left: -100px; }
+  .blob-2 { width: 600px; height: 600px; background: rgba(0,180,255,0.05); bottom: -100px; right: 200px; }
+  .blob-3 { width: 400px; height: 400px; background: rgba(0,255,120,0.04); top: 200px; left: 50%; }
+
+  /* Central glow behind logo */
+  .center-glow {
+    position: absolute;
+    width: 800px;
+    height: 400px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse, rgba(0,255,160,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Horizontal scan line */
+  .scanline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,255,160,0.4), rgba(0,220,255,0.4), transparent);
+    animation: scan 6s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba(0,255,160,0.3);
+  }
+  @keyframes scan {
+    0%   { top: 0;    opacity: 0; }
+    5%   { opacity: 1; }
+    95%  { opacity: 1; }
+    100% { top: 1080px; opacity: 0; }
+  }
+
+  /* Top bar */
+  .topbar {
+    position: absolute;
+    top: 40px; left: 60px; right: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(0,255,160,0.35);
+    letter-spacing: 0.12em;
+  }
+
+  .topbar-left, .topbar-right { display: flex; gap: 32px; }
+  .topbar-item { display: flex; align-items: center; gap: 8px; }
+  .topbar-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(0,255,160,0.5); }
+  .topbar-dot.pulse { animation: dotPulse 2s ease-in-out infinite; }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 6px rgba(0,255,160,0.8); }
+  }
+
+  /* Bottom bar */
+  .bottombar {
+    position: absolute;
+    bottom: 40px; left: 60px; right: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(0,255,160,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  /* Left side terminal block */
+  .terminal-block {
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.9;
+    color: rgba(0,255,160,0.22);
+  }
+
+  .terminal-block .line { display: block; }
+  .terminal-block .line.bright { color: rgba(0,255,160,0.55); }
+  .terminal-block .line.dim { color: rgba(0,255,160,0.14); }
+  .terminal-block .line.cyan { color: rgba(0,220,255,0.4); }
+  .terminal-block .prompt { color: rgba(0,255,160,0.4); }
+  .terminal-block .value { color: rgba(0,220,255,0.45); }
+  .terminal-block .comment { color: rgba(255,255,255,0.12); }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 7px; height: 13px;
+    background: rgba(0,255,160,0.7);
+    vertical-align: middle;
+    animation: blink 1.1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* Right side data panel */
+  .data-panel {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 280px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(0,255,160,0.25);
+  }
+
+  .data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(0,255,160,0.05);
+  }
+
+  .data-row .label { color: rgba(255,255,255,0.18); }
+  .data-row .val { color: rgba(0,220,255,0.5); font-weight: 700; }
+  .data-row .val.green { color: rgba(0,255,120,0.6); }
+  .data-row .val.amber { color: rgba(255,180,0,0.5); }
+
+  .panel-header {
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(0,255,160,0.3);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,255,160,0.1);
+  }
+
+  .bar-row {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .bar-item { font-size: 10px; }
+  .bar-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+    color: rgba(255,255,255,0.2);
+  }
+  .bar-track {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(0,255,160,0.6), rgba(0,220,255,0.7));
+  }
+
+  /* CENTER LOGO AREA */
+  .logo-area {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .logo-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(0,255,160,0.4);
+    margin-bottom: 20px;
+  }
+
+  .logo-wordmark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 112px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    position: relative;
+  }
+
+  .logo-nex {
+    background: linear-gradient(135deg, #00ffb0 0%, #00e8ff 50%, #00ffb0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(0,255,160,0.5));
+  }
+
+  .logo-form {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.55) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-top: 20px;
+    font-weight: 300;
+  }
+
+  /* Divider line under logo */
+  .logo-line {
+    width: 240px;
+    height: 1px;
+    margin: 22px auto;
+    background: linear-gradient(90deg, transparent, rgba(0,255,160,0.5), rgba(0,220,255,0.5), transparent);
+    position: relative;
+  }
+  .logo-line::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: -2px;
+    transform: translateX(-50%);
+    width: 5px; height: 5px;
+    background: rgba(0,255,160,0.8);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0,255,160,1);
+  }
+
+  /* Corner brackets */
+  .corner {
+    position: absolute;
+    width: 28px; height: 28px;
+    opacity: 0.25;
+  }
+  .corner-tl { top: 28px; left: 28px; border-top: 1.5px solid #00ffb0; border-left: 1.5px solid #00ffb0; }
+  .corner-tr { top: 28px; right: 28px; border-top: 1.5px solid #00ffb0; border-right: 1.5px solid #00ffb0; }
+  .corner-bl { bottom: 28px; left: 28px; border-bottom: 1.5px solid #00ffb0; border-left: 1.5px solid #00ffb0; }
+  .corner-br { bottom: 28px; right: 28px; border-bottom: 1.5px solid #00ffb0; border-right: 1.5px solid #00ffb0; }
+
+  /* Vertical line decorations */
+  .vline {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(0,255,160,0.12), transparent);
+    pointer-events: none;
+  }
+
+  /* Node connection dots */
+  .node-dot {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: rgba(0,255,160,0.4);
+    box-shadow: 0 0 6px rgba(0,255,160,0.4);
+  }
+
+  /* Small metric circles */
+  .metric-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0,255,160,0.12);
+  }
+
+  /* Floating particles canvas */
+  #particles { position: absolute; inset: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="scene">
+  <!-- Canvas for particle network -->
+  <canvas id="particles" width="1920" height="1080"></canvas>
+
+  <!-- Grid -->
+  <div class="grid"></div>
+
+  <!-- Ambient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="center-glow"></div>
+
+  <!-- Scan line -->
+  <div class="scanline"></div>
+
+  <!-- Corners -->
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- Vertical decorative lines -->
+  <div class="vline" style="left: 440px; top: 80px; height: 920px;"></div>
+  <div class="vline" style="right: 380px; top: 80px; height: 920px;"></div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-item"><div class="topbar-dot pulse"></div>SYS.ONLINE</div>
+      <div class="topbar-item"><div class="topbar-dot"></div>NODE_01 :: ACTIVE</div>
+      <div class="topbar-item"><div class="topbar-dot"></div>ENCRYPT :: AES-256</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-item">API v2.4.1</div>
+      <div class="topbar-item"><div class="topbar-dot pulse"></div>PIPELINE :: RUNNING</div>
+      <div class="topbar-item">NEXFORM.IO</div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottombar">
+    <span>© 2025 NEXFORM · DIGITAL TRANSFORMATION</span>
+    <span style="color: rgba(0,255,160,0.2);">████████████████████ 100% DIGITALIZED</span>
+    <span>BUILD 1987.14.07 · CAMPOS DOS GOYTACAZES · BRASIL</span>
+  </div>
+
+  <!-- Left terminal -->
+  <div class="terminal-block">
+    <span class="line dim">// nexform.transform()</span>
+    <span class="line bright"><span class="prompt">❯ </span>init <span class="value">--client</span> NEXFORM</span>
+    <span class="line"><span class="prompt">  </span>loading modules...</span>
+    <span class="line cyan"><span class="prompt">  </span>✓ form.digitizer  <span class="value">OK</span></span>
+    <span class="line cyan"><span class="prompt">  </span>✓ workflow.engine <span class="value">OK</span></span>
+    <span class="line cyan"><span class="prompt">  </span>✓ pdf.generator   <span class="value">OK</span></span>
+    <span class="line cyan"><span class="prompt">  </span>✓ auth.jwt        <span class="value">OK</span></span>
+    <span class="line dim">──────────────────────</span>
+    <span class="line bright"><span class="prompt">❯ </span>deploy <span class="value">--env</span> production</span>
+    <span class="line"><span class="prompt">  </span>uploading artifacts...</span>
+    <span class="line cyan"><span class="prompt">  </span>status: <span class="value">LIVE ●</span></span>
+    <span class="line dim"> </span>
+    <span class="line bright"><span class="prompt">❯ </span><span class="cursor-blink"></span></span>
+  </div>
+
+  <!-- Center logo -->
+  <div class="logo-area">
+    <div class="logo-eyebrow">Plataforma de</div>
+    <div class="logo-wordmark">
+      <span class="logo-nex">NEX</span><span class="logo-form">FORM</span>
+    </div>
+    <div class="logo-line"></div>
+    <div class="logo-tagline">Transformação Digital</div>
+  </div>
+
+  <!-- Right data panel -->
+  <div class="data-panel">
+    <div class="panel-header">// sys.metrics</div>
+
+    <div class="data-row">
+      <span class="label">forms_digitalized</span>
+      <span class="val green">2.847</span>
+    </div>
+    <div class="data-row">
+      <span class="label">avg_process_time</span>
+      <span class="val">0.3s</span>
+    </div>
+    <div class="data-row">
+      <span class="label">uptime</span>
+      <span class="val green">99.97%</span>
+    </div>
+    <div class="data-row">
+      <span class="label">active_users</span>
+      <span class="val">148</span>
+    </div>
+    <div class="data-row">
+      <span class="label">pdfs_generated</span>
+      <span class="val">1.204</span>
+    </div>
+    <div class="data-row">
+      <span class="label">errors_today</span>
+      <span class="val green">0</span>
+    </div>
+
+    <div class="bar-row" style="margin-top: 20px;">
+      <div style="font-size:9.5px; letter-spacing:0.18em; color:rgba(0,255,160,0.3); margin-bottom:10px; text-transform:uppercase;">// load.distribution</div>
+      <div class="bar-item">
+        <div class="bar-label"><span>API Gateway</span><span style="color:rgba(0,220,255,0.5)">87%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:87%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>PDF Engine</span><span style="color:rgba(0,220,255,0.5)">62%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:62%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>Auth Service</span><span style="color:rgba(0,220,255,0.5)">44%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:44%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>DB Cluster</span><span style="color:rgba(0,220,255,0.5)">31%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:31%"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+
+const W = 1920, H = 1080;
+const N = 90;
+const MAX_DIST = 180;
+
+const pts = Array.from({ length: N }, () => ({
+  x: Math.random() * W,
+  y: Math.random() * H,
+  vx: (Math.random() - 0.5) * 0.45,
+  vy: (Math.random() - 0.5) * 0.45,
+  r: Math.random() * 1.8 + 0.6,
+  alpha: Math.random() * 0.4 + 0.1
+}));
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  for (let i = 0; i < N; i++) {
+    const a = pts[i];
+    a.x += a.vx; a.y += a.vy;
+    if (a.x < 0 || a.x > W) a.vx *= -1;
+    if (a.y < 0 || a.y > H) a.vy *= -1;
+
+    for (let j = i + 1; j < N; j++) {
+      const b = pts[j];
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < MAX_DIST) {
+        const alpha = (1 - d / MAX_DIST) * 0.12;
+        ctx.strokeStyle = `rgba(0,255,160,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+
+    ctx.beginPath();
+    ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,255,160,${a.alpha})`;
+    ctx.fill();
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>
