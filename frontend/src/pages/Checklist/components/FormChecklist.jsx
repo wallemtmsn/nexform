@@ -92,8 +92,8 @@ export default function FormChecklist({ usuario, empresa, onSalvar }) {
       {/* Header */}
       <div className="form-ck-header">
         <div>
-          <h1>Checklist Diário — Empilhadeira a Combustão</h1>
-          <p>BPORT/SGI/FORM-MANEQP/1400 · Rev.04 · Preencha todos os itens antes de iniciar a operação.</p>
+          <h1>Checklist Diário — Empilhadeiras</h1>
+          <p>Preencha todos os itens antes de iniciar a operação.</p>
         </div>
         <div className="ck-numero">
           <span>Número</span>
@@ -155,13 +155,9 @@ export default function FormChecklist({ usuario, empresa, onSalvar }) {
 
       {/* ── OBSERVAÇÕES GERAIS ── */}
       <div className="ck-obs-box">
-        <div className="ck-obs-titulo">OBSERVAÇÕES IMPORTANTES</div>
+        <div className="ck-obs-titulo">OBSERVAÇÃO IMPORTANTE</div>
         <ul className="ck-obs-lista">
-          <li>Para o equipamento com telemetria, favor aproximar cartão "RFID" no leitor. É proibido utilizar o cartão de outro operador.</li>
-          <li>Executar este checklist antes de iniciar os trabalhos, sendo obrigatório o preenchimento de todos os itens listados.</li>
-          <li>Qualquer marcação de um item <strong>"NC"</strong> com <strong>"***"</strong> inviabiliza a operação até avaliação de responsável da manutenção.</li>
-          <li>Proibido içamento de carga acima da capacidade nominal do equipamento.</li>
-          <li><strong>ANTES DE OPERAR E DESLIGAR</strong> o equipamento, favor manter o mesmo ligado por um minuto.</li>
+          <li>Qualquer marcação de um item <strong>"NC"</strong> sinalizado com <i className="bi bi-exclamation-triangle" style={{color:'#dc2626'}} /> inviabiliza a operação até avaliação do responsável da manutenção.</li>
         </ul>
       </div>
 
@@ -170,7 +166,7 @@ export default function FormChecklist({ usuario, empresa, onSalvar }) {
         <span><strong>C</strong> = Conforme</span>
         <span><strong>NC</strong> = Não Conforme</span>
         <span><strong>NA</strong> = Não Aplicável</span>
-        <span className="ck-legenda-critico"><i className="bi bi-exclamation-triangle" /> Item com *** inviabiliza operação se NC</span>
+        <span className="ck-legenda-critico"><i className="bi bi-exclamation-triangle" /> Item crítico — inviabiliza operação se NC</span>
       </div>
 
       {/* ── ITENS DO CHECKLIST ── */}
@@ -198,9 +194,9 @@ export default function FormChecklist({ usuario, empresa, onSalvar }) {
                 const resp    = respostas[item.id]
                 const isNC    = resp === 'NC'
                 return (
-                  <div key={item.id} className={`ck-item-row ${item.temNA ? 'ck-item-row--has-na' : ''} ${isNC ? 'ck-item-row--nc' : ''}`}>
+                  <div key={item.id} className={`ck-item-row ${item.temNA ? 'ck-item-row--has-na' : ''} ${isNC ? 'ck-item-row--nc' : ''} ${item.critico ? 'ck-item-row--critico' : ''}`}>
                     <div className="ck-item-num">
-                      {item.critico && <span className="ck-critico-badge" title="Item crítico">***</span>}
+                      {item.critico && <i className="bi bi-exclamation-triangle ck-critico-icon" title="Item crítico — inviabiliza operação se NC" />}
                       {item.id}
                     </div>
                     <div className="ck-item-desc">{item.texto}</div>

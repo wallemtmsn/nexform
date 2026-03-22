@@ -5,6 +5,7 @@
 
 import { useState, useMemo } from 'react'
 import ModalAprovacao from './ModalAprovacao'
+import { gerarPDFChecklist } from '../utils/gerarPDFChecklist'
 import './DashboardChecklist.css'
 
 function fmtDate(s) {
@@ -23,6 +24,7 @@ export default function DashboardChecklist({ store, usuario, empresa, onAprovar,
   const [filtro, setFiltro]         = useState('todos')
   const [busca, setBusca]           = useState('')
   const [modalChecklist, setModal]  = useState(null)
+  const [gerandoPDF, setGerandoPDF] = useState(null) // id do checklist sendo gerado
 
   const isLider = usuario.perfil === 'lider'
 
@@ -54,6 +56,16 @@ export default function DashboardChecklist({ store, usuario, empresa, onAprovar,
   function confirmarAprovacao() {
     onAprovar(modalChecklist.id)
     setModal(null)
+  }
+
+  async function handleGerarPDF(checklist) {
+    setGerandoPDF(checklist.id)
+    try {
+      await gerarPDFChecklist(checklist, empresa)
+    } catch (e) {
+      alert('Erro ao gerar PDF. Tente novamente.')
+    }
+    setGerandoPDF(null)
   }
 
   return (
@@ -173,6 +185,17 @@ export default function DashboardChecklist({ store, usuario, empresa, onAprovar,
                   {c.lider || '—'}
                 </div>
                 <div className="ck-row-actions">
+                  <button
+                    className="ck-pdf-btn"
+                    title="Baixar PDF"
+                    onClick={() => handleGerarPDF(c)}
+                    disabled={gerandoPDF === c.id}
+                  >
+                    {gerandoPDF === c.id
+                      ? <i className="bi bi-hourglass-split" />
+                      : <i className="bi bi-file-earmark-pdf" />
+                    }
+                  </button>
                   {isLider && c.status === 'aguardando' && (
                     <button className="ck-aprovar-btn" onClick={() => handleAprovar(c)}>
                       <i className="bi bi-shield-check" /> Aprovar
