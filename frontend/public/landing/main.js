@@ -10,7 +10,7 @@
 
 /* ── 1. CONFIGURAÇÃO ── */
 /* ── 6. LINKS WHATSAPP DIRETOS ── */
-const WA_NUMBER = '5522974047856';
+const WA_NUMBER = '5522998303157';
 const WA_MSG = encodeURIComponent('Olá! Vim pelo site da Nexform e gostaria de um estudo de caso para digitalizar meu processo.');
 
 const waDirectLink = document.getElementById('wa-direct-link');
