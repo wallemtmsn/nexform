@@ -11,18 +11,42 @@
 /* ── 1. CONFIGURAÇÃO ── */
 /* ── 6. LINKS WHATSAPP DIRETOS ── */
 const WA_NUMBER = '5522998303157';
-const WA_MSG = encodeURIComponent('Olá! Vim pelo site da Nexform e gostaria de um estudo de caso para digitalizar meu processo.');
+const WA_MSG = encodeURIComponent('Olá! Vim pelo site da NEXFORMS e gostaria de um estudo de caso para digitalizar meu processo.');
 
 const waDirectLink = document.getElementById('wa-direct-link');
 if (waDirectLink) {
   waDirectLink.href = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
 }
 
-/* ── 2. NAVBAR — muda aparência ao rolar ── */
-const nav = document.getElementById('navbar');
+/* ── 2. NAVBAR — muda aparência ao rolar + menu mobile ── */
+const nav        = document.getElementById('navbar');
+const navToggle  = document.getElementById('navToggle');
+const navLinks   = document.getElementById('navLinks');
 
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+function toggleNav() {
+  const open = navToggle.classList.toggle('open');
+  navLinks.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+function closeNav() {
+  navToggle.classList.remove('open');
+  navLinks.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+navToggle.addEventListener('click', toggleNav);
+
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', closeNav);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeNav();
 });
 
 /* ── 3. SCROLL REVEAL ── */
@@ -52,7 +76,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
  * @returns {string} URL encoded message
  */
 function buildWAMessage(nome, empresa, tipo, descricao) {
-  let msg = 'Olá! Vim pelo site da Nexform e gostaria de um estudo de caso.\n\n';
+  let msg = 'Olá! Vim pelo site da NEXFORMS e gostaria de um estudo de caso.\n\n';
   if (nome)      msg += `*Nome:* ${nome}\n`;
   if (empresa)   msg += `*Empresa:* ${empresa}\n`;
   if (tipo)      msg += `*Processo:* ${tipo}\n`;
