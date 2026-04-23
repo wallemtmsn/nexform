@@ -206,7 +206,7 @@
     const d = collectData();
     const missing = validate(d);
     if (missing.length) {
-      alert('Preencha os campos obrigatórios:\n\n• ' + missing.join('\n• '));
+      showErrorModal(missing);
       return;
     }
 
@@ -259,7 +259,7 @@
       document.getElementById('success-overlay').classList.add('open');
 
     } catch (err) {
-      alert('Erro ao gerar PDF. Tente novamente.');
+      showErrorModal(['Erro ao gerar PDF. Tente novamente.']);
       console.error(err);
     }
 
@@ -271,6 +271,16 @@
     document.getElementById('success-overlay').classList.remove('open');
     currentPT = genPTNumber();
     document.getElementById('pt-num').textContent = currentPT;
+  }
+
+  function showErrorModal(missing) {
+    const list = document.getElementById('modal-missing-list');
+    list.innerHTML = missing.map(m => `<li>${m}</li>`).join('');
+    document.getElementById('error-overlay').classList.add('open');
+  }
+
+  function closeErrorModal() {
+    document.getElementById('error-overlay').classList.remove('open');
   }
 
   // Set today as default start date

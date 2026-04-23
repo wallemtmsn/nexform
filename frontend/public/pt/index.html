@@ -248,6 +248,17 @@
 
 </div><!-- /page-wrap -->
 
+<!-- ERROR MODAL -->
+<div class="overlay" id="error-overlay">
+  <div class="modal">
+    <div class="modal-icon modal-icon--error"><i class="bi bi-exclamation-triangle"></i></div>
+    <h3>Campos obrigatórios</h3>
+    <p>Preencha os itens abaixo antes de gerar a PT:</p>
+    <ul class="modal-missing-list" id="modal-missing-list"></ul>
+    <button class="btn btn-primary" onclick="closeErrorModal()" style="width:100%;justify-content:center;">Entendido</button>
+  </div>
+</div>
+
 <!-- SUCCESS MODAL -->
 <div class="overlay" id="success-overlay">
   <div class="modal">

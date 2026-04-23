@@ -315,8 +315,25 @@
       font-size: 1.4rem;
       color: var(--green);
     }
+    .modal-icon--error { background: rgba(220,38,38,0.1); color: var(--red); }
     .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--navy); margin-bottom: 0.5rem; }
-    .modal p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .modal p { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.6; }
+    .modal-missing-list {
+      list-style: none;
+      text-align: left;
+      margin: 0 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .modal-missing-list li {
+      font-size: 0.83rem;
+      color: var(--text);
+      padding: 0.45rem 0.75rem;
+      background: rgba(220,38,38,0.05);
+      border-left: 2px solid var(--red);
+      border-radius: 0 3px 3px 0;
+    }
 
     /* ── PDF TEMPLATE (hidden, used for capture) ── */
     #pdf-template {
