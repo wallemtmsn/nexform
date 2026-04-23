@@ -31,12 +31,12 @@ function resolveStatus(row) {
 
 // ── PTs de exemplo para demonstração
 const PTS_INICIAIS = [
-  { pt: 'PT-2026-0841', empresa: 'Nexform Demo', responsavel: 'João Ferreira',   tipo: 'Trabalho em Altura (acima de 2 metros)',          local: 'Área Industrial 03',    risco: 'Alto',  dataFim: offsetDate(2),  status: 'ativa' },
-  { pt: 'PT-2026-0840', empresa: 'Nexform Demo', responsavel: 'Carla Mendes',    tipo: 'Trabalho a Quente (solda, corte, esmerilhamento)', local: 'Armazém B - Área 4',    risco: 'Alto',  dataFim: offsetDate(0),  status: 'ativa' },
-  { pt: 'PT-2026-0839', empresa: 'Nexform Demo', responsavel: 'Roberto Lima',    tipo: 'Espaço Confinado',                                local: 'Tanque T-07',           risco: 'Alto',  dataFim: offsetDate(-1), status: 'vencida' },
-  { pt: 'PT-2026-0838', empresa: 'Nexform Demo', responsavel: 'Fernanda Souza',  tipo: 'Içamento e Movimentação de Cargas',               local: 'Pátio Externo Sul',     risco: 'Médio', dataFim: offsetDate(-3), status: 'encerrada' },
-  { pt: 'PT-2026-0837', empresa: 'Nexform Demo', responsavel: 'Carlos Eduardo',  tipo: 'Bloqueio e Etiquetagem (LOTO)',                   local: 'Subestação SE-02',      risco: 'Médio', dataFim: offsetDate(1),  status: 'ativa' },
-  { pt: 'PT-2026-0836', empresa: 'Nexform Demo', responsavel: 'Marcio Dutra',    tipo: 'Trabalho Elétrico (alta tensão)',                 local: 'Torre de Alta Tensão',  risco: 'Alto',  dataFim: offsetDate(0),  status: 'ativa' },
+  { pt: 'PT-2026-0841', empresa: 'NEXFORMS Demo', responsavel: 'João Ferreira',   tipo: 'Trabalho em Altura (acima de 2 metros)',          local: 'Área Industrial 03',    risco: 'Alto',  dataFim: offsetDate(2),  status: 'ativa' },
+  { pt: 'PT-2026-0840', empresa: 'NEXFORMS Demo', responsavel: 'Carla Mendes',    tipo: 'Trabalho a Quente (solda, corte, esmerilhamento)', local: 'Armazém B - Área 4',    risco: 'Alto',  dataFim: offsetDate(0),  status: 'ativa' },
+  { pt: 'PT-2026-0839', empresa: 'NEXFORMS Demo', responsavel: 'Roberto Lima',    tipo: 'Espaço Confinado',                                local: 'Tanque T-07',           risco: 'Alto',  dataFim: offsetDate(-1), status: 'vencida' },
+  { pt: 'PT-2026-0838', empresa: 'NEXFORMS Demo', responsavel: 'Fernanda Souza',  tipo: 'Içamento e Movimentação de Cargas',               local: 'Pátio Externo Sul',     risco: 'Médio', dataFim: offsetDate(-3), status: 'encerrada' },
+  { pt: 'PT-2026-0837', empresa: 'NEXFORMS Demo', responsavel: 'Carlos Eduardo',  tipo: 'Bloqueio e Etiquetagem (LOTO)',                   local: 'Subestação SE-02',      risco: 'Médio', dataFim: offsetDate(1),  status: 'ativa' },
+  { pt: 'PT-2026-0836', empresa: 'NEXFORMS Demo', responsavel: 'Marcio Dutra',    tipo: 'Trabalho Elétrico (alta tensão)',                 local: 'Torre de Alta Tensão',  risco: 'Alto',  dataFim: offsetDate(0),  status: 'ativa' },
 ]
 
 export default function PT() {

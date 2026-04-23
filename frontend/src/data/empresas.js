@@ -7,8 +7,8 @@
 const empresas = [
   {
     id: 'nexform',
-    nomeFantasia: 'Nexform',
-    nomeCompleto: 'Nexform Plataforma de Transformação Digital',
+    nomeFantasia: 'NEXFORMS',
+    nomeCompleto: 'NEXFORMS Plataforma de Transformação Digital',
     cnpj: '52.715.328/0001-28',
     localidade: 'Rio de Janeiro, RJ',
     cor: '#2d6be4',

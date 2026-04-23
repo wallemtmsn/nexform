@@ -99,7 +99,7 @@ export default function Login() {
         </div>
 
         <div className="login-footer-text">
-          <span>© 2025 Nexform · Todos os direitos reservados</span>
+          <span>© 2025 NEXFORMS · Todos os direitos reservados</span>
           <span>Desenvolvido para {empresa.nomeFantasia} — {empresa.localidade}</span>
         </div>
       </div>
