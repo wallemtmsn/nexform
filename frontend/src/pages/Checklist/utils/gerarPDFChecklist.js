@@ -156,7 +156,7 @@ function buildHTML(checklist, empresa) {
 
   <!-- Rodapé -->
   <div style="margin-top:16px; padding-top:8px; border-top:1px solid #dce5f0; display:flex; justify-content:space-between; font-size:0.6rem; color:#6b7f9a;">
-    <span>Nexform · CNPJ ${empresa.cnpj || '—'}</span>
+    <span>NEXFORMS · CNPJ ${empresa.cnpj || '—'}</span>
     <span>${checklist.id} · Gerado em ${new Date().toLocaleString('pt-BR')}</span>
     <span>${checklist.status === 'aprovado' ? '✓ Aprovado' : 'Aguardando aprovação'}</span>
   </div>`

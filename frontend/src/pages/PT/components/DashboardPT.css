@@ -179,3 +179,24 @@
   display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s;
 }
 .btn-danger-confirm:hover { background: #b91c1c; }
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 1rem;
+  }
+  .modal-confirm {
+    padding: 1.5rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-confirm-actions {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+  .btn-ghost-confirm,
+  .btn-danger-confirm {
+    width: 100%;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+  }
+}

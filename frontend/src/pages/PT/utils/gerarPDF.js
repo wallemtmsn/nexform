@@ -142,7 +142,7 @@ function buildPDFHTML(d, empresa) {
   </div>
 
   <div class="pdf-footer">
-    <span>Nexform · CNPJ ${empresa.cnpj || '—'} · Plataforma de Transformação Digital</span>
+    <span>NEXFORMS · CNPJ ${empresa.cnpj || '—'} · Plataforma de Transformação Digital</span>
     <span>${d.pt} · ${d.emitidoEm}</span>
     <span>Válido somente com assinaturas</span>
   </div>`
