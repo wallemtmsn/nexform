@@ -11,7 +11,7 @@
 /* ── 1. CONFIGURAÇÃO ── */
 /* ── 6. LINKS WHATSAPP DIRETOS ── */
 const WA_NUMBER = '5522998303157';
-const WA_MSG = encodeURIComponent('Olá! Vim pelo site da Nexform e gostaria de um estudo de caso para digitalizar meu processo.');
+const WA_MSG = encodeURIComponent('Olá! Vim pelo site da NEXFORMS e gostaria de um estudo de caso para digitalizar meu processo.');
 
 const waDirectLink = document.getElementById('wa-direct-link');
 if (waDirectLink) {
@@ -52,7 +52,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
  * @returns {string} URL encoded message
  */
 function buildWAMessage(nome, empresa, tipo, descricao) {
-  let msg = 'Olá! Vim pelo site da Nexform e gostaria de um estudo de caso.\n\n';
+  let msg = 'Olá! Vim pelo site da NEXFORMS e gostaria de um estudo de caso.\n\n';
   if (nome)      msg += `*Nome:* ${nome}\n`;
   if (empresa)   msg += `*Empresa:* ${empresa}\n`;
   if (tipo)      msg += `*Processo:* ${tipo}\n`;

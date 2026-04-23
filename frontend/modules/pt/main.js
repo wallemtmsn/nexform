@@ -195,7 +195,7 @@
     </div>
 
     <div class="pdf-footer">
-      <span>Nexform · Sistema de Permissão de Trabalho</span>
+      <span>NEXFORMS · Sistema de Permissão de Trabalho</span>
       <span>${d.pt} · ${d.emitidoEm}</span>
       <span>Este documento tem validade somente com assinaturas</span>
     </div>`;
