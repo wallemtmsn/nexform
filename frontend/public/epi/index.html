@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexform — Ficha de Entrega de EPI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../" class="brand">NEXFORMS</a>
+  <div class="user-pill"><i class="bi bi-person-circle"></i><span>Carlos Eduardo · Segurança</span></div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div>
+      <h1>Ficha de Entrega de EPI</h1>
+      <p>Controle de entrega de Equipamentos de Proteção Individual · NR-6 / Portaria MTE nº 3.214/78</p>
+    </div>
+    <div class="doc-number">
+      <span>Número do Registro</span>
+      <strong id="fe-num">FE-2026-0001</strong>
+    </div>
+  </div>
+
+  <!-- 1. IDENTIFICAÇÃO DO COLABORADOR -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-person-badge"></i><h2>1. Identificação do Colaborador</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2" style="margin-bottom:1rem;">
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Nome Completo <span class="req">*</span></label>
+          <input type="text" id="nome" placeholder="Nome completo do colaborador" />
+        </div>
+      </div>
+      <div class="form-grid col-3">
+        <div class="fgroup">
+          <label>CPF <span class="req">*</span></label>
+          <input type="text" id="cpf" placeholder="000.000.000-00" />
+        </div>
+        <div class="fgroup">
+          <label>RG</label>
+          <input type="text" id="rg" placeholder="Número do RG" />
+        </div>
+        <div class="fgroup">
+          <label>Matrícula</label>
+          <input type="text" id="matricula" placeholder="Matrícula funcional" />
+        </div>
+        <div class="fgroup">
+          <label>Cargo / Função <span class="req">*</span></label>
+          <input type="text" id="cargo" placeholder="Ex: Operador, Técnico..." />
+        </div>
+        <div class="fgroup">
+          <label>Setor / Departamento <span class="req">*</span></label>
+          <input type="text" id="setor" placeholder="Ex: Manutenção, Produção..." />
+        </div>
+        <div class="fgroup">
+          <label>Data de Admissão</label>
+          <input type="date" id="data-admissao" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DADOS DO EMPREGADOR -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-building"></i><h2>2. Dados do Empregador</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-3">
+        <div class="fgroup" style="grid-column: span 2;">
+          <label>Empresa / Razão Social <span class="req">*</span></label>
+          <input type="text" id="empresa" placeholder="Razão social da empresa" />
+        </div>
+        <div class="fgroup">
+          <label>CNPJ / CPF</label>
+          <input type="text" id="cnpj" placeholder="00.000.000/0000-00" />
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Responsável pela Entrega <span class="req">*</span></label>
+          <input type="text" id="responsavel" placeholder="Nome do responsável pela entrega dos EPIs" value="Carlos Eduardo Mendes" />
+        </div>
+        <div class="fgroup">
+          <label>Cargo do Responsável</label>
+          <input type="text" id="cargo-responsavel" placeholder="Ex: Técnico de Segurança do Trabalho" />
+        </div>
+        <div class="fgroup">
+          <label>CREA / CRBM / Registro</label>
+          <input type="text" id="registro-responsavel" placeholder="Nº do registro profissional" />
+        </div>
+        <div class="fgroup">
+          <label>Local / Unidade</label>
+          <input type="text" id="local" placeholder="Cidade, unidade ou planta" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. EPIs ENTREGUES -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-shield-check"></i><h2>3. EPIs Entregues</h2></div>
+    <div class="card-body">
+      <p class="table-hint">Adicione um item por linha. O Nº CA (Certificado de Aprovação) é obrigatório por lei.</p>
+
+      <div class="epi-table">
+        <div class="epi-table-head">
+          <span>Descrição do EPI</span>
+          <span>Nº CA</span>
+          <span>Qtd</span>
+          <span>Data de Entrega</span>
+          <span>Motivo</span>
+          <span></span>
+        </div>
+        <div id="epi-rows"></div>
+      </div>
+
+      <button type="button" class="add-row-btn" onclick="addEPIRow()">
+        <i class="bi bi-plus-circle"></i> Adicionar EPI
+      </button>
+    </div>
+  </div>
+
+  <!-- 4. DECLARAÇÃO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-file-text"></i><h2>4. Declaração do Colaborador</h2></div>
+    <div class="card-body">
+      <div class="declaration-box">
+        <p>Declaro que recebi os Equipamentos de Proteção Individual (EPIs) listados neste documento, que fui devidamente orientado(a) quanto ao seu uso correto, conservação, higienização e guarda, comprometendo-me a utilizá-los sempre que necessário para a execução das minhas atividades, conforme determina a <strong>NR-6 da Portaria MTE nº 3.214/78</strong>.</p>
+        <p style="margin-top:0.6rem;">Estou ciente de que a recusa ao uso do EPI ou seu uso inadequado configura <strong>falta grave</strong>, sujeita às penalidades previstas na CLT, incluindo possibilidade de dispensa por justa causa. Comprometo-me ainda a comunicar imediatamente qualquer dano, extravio ou necessidade de substituição do equipamento.</p>
+      </div>
+      <div class="form-grid col-2" style="margin-top:1rem;">
+        <div class="fgroup">
+          <label>Data de Emissão</label>
+          <input type="date" id="data-emissao" readonly />
+        </div>
+        <div class="fgroup">
+          <label>Observações Gerais</label>
+          <input type="text" id="observacoes" placeholder="Observações adicionais (opcional)" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ASSINATURAS -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-pen"></i><h2>5. Assinaturas</h2></div>
+    <div class="card-body">
+      <div class="sig-area">
+        <div class="sig-box">
+          <div class="sig-label">Assinatura — Colaborador</div>
+        </div>
+        <div class="sig-box">
+          <div class="sig-label">Assinatura — Responsável pela Entrega</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn btn-ghost" onclick="clearForm()"><i class="bi bi-arrow-counterclockwise"></i> Limpar formulário</button>
+    <button class="btn btn-primary" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf"></i> Gerar Ficha de Entrega</button>
+  </div>
+
+</div>
+
+<!-- ERROR MODAL -->
+<div class="overlay" id="error-overlay">
+  <div class="modal">
+    <div class="modal-icon modal-icon--error"><i class="bi bi-exclamation-triangle"></i></div>
+    <h3>Campos obrigatórios</h3>
+    <p>Preencha os itens abaixo antes de gerar o documento:</p>
+    <ul class="modal-missing-list" id="modal-missing-list"></ul>
+    <button class="btn btn-primary" onclick="closeErrorModal()" style="width:100%;justify-content:center;">Entendido</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="overlay" id="success-overlay">
+  <div class="modal">
+    <div class="modal-icon"><i class="bi bi-check-lg"></i></div>
+    <h3>Ficha Gerada com Sucesso</h3>
+    <p>A Ficha de Entrega de EPI <strong id="modal-fe-num"></strong> foi gerada e o download do PDF iniciará automaticamente.</p>
+    <div style="display:flex;gap:0.7rem;justify-content:center;">
+      <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-success" onclick="closeModal()"><i class="bi bi-plus-lg"></i> Nova Ficha</button>
+    </div>
+  </div>
+</div>
+
+<div id="pdf-template"></div>
+<script src="main.js"></script>
+</body>
+</html>
