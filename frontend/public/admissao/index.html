@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexform — Formulário de Admissão</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="#" class="brand">NEXFORMS</a>
+  <div class="user-pill"><i class="bi bi-person-circle"></i><span>Carlos Eduardo · RH</span></div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div>
+      <h1>Formulário de Admissão</h1>
+      <p>Preencha todos os campos obrigatórios para registrar o novo colaborador.</p>
+    </div>
+    <div class="doc-number">
+      <span>Número do Registro</span>
+      <strong id="adm-num">ADM-2026-0001</strong>
+    </div>
+  </div>
+
+  <!-- 1. DADOS PESSOAIS -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-person"></i><h2>Dados Pessoais</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2">
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Nome Completo <span class="req">*</span></label>
+          <input type="text" id="nome" placeholder="Nome completo do colaborador" />
+        </div>
+        <div class="fgroup">
+          <label>CPF <span class="req">*</span></label>
+          <input type="text" id="cpf" placeholder="000.000.000-00" />
+        </div>
+        <div class="fgroup">
+          <label>RG</label>
+          <input type="text" id="rg" placeholder="Número do RG" />
+        </div>
+        <div class="fgroup">
+          <label>Data de Nascimento <span class="req">*</span></label>
+          <input type="date" id="data-nascimento" />
+        </div>
+        <div class="fgroup">
+          <label>Estado Civil</label>
+          <select id="estado-civil">
+            <option value="">Selecione...</option>
+            <option>Solteiro(a)</option>
+            <option>Casado(a)</option>
+            <option>Divorciado(a)</option>
+            <option>Viúvo(a)</option>
+            <option>União Estável</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Naturalidade</label>
+          <input type="text" id="naturalidade" placeholder="Cidade / Estado de nascimento" />
+        </div>
+        <div class="fgroup">
+          <label>Nacionalidade</label>
+          <input type="text" id="nacionalidade" placeholder="Ex: Brasileira" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ENDEREÇO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-geo-alt"></i><h2>Endereço</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-3">
+        <div class="fgroup">
+          <label>CEP</label>
+          <input type="text" id="cep" placeholder="00000-000" />
+        </div>
+        <div class="fgroup" style="grid-column: span 2;">
+          <label>Logradouro <span class="req">*</span></label>
+          <input type="text" id="logradouro" placeholder="Rua, Avenida, Travessa..." />
+        </div>
+        <div class="fgroup">
+          <label>Número</label>
+          <input type="text" id="numero" placeholder="Nº" />
+        </div>
+        <div class="fgroup">
+          <label>Complemento</label>
+          <input type="text" id="complemento" placeholder="Apto, Bloco..." />
+        </div>
+        <div class="fgroup">
+          <label>Bairro <span class="req">*</span></label>
+          <input type="text" id="bairro" placeholder="Bairro" />
+        </div>
+        <div class="fgroup" style="grid-column: span 2;">
+          <label>Cidade <span class="req">*</span></label>
+          <input type="text" id="cidade" placeholder="Cidade" />
+        </div>
+        <div class="fgroup">
+          <label>Estado <span class="req">*</span></label>
+          <select id="estado">
+            <option value="">UF</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option>SP</option><option>SE</option><option>TO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. CONTATO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-telephone"></i><h2>Contato</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2">
+        <div class="fgroup">
+          <label>Telefone / WhatsApp <span class="req">*</span></label>
+          <input type="text" id="telefone" placeholder="(00) 00000-0000" />
+        </div>
+        <div class="fgroup">
+          <label>E-mail</label>
+          <input type="email" id="email" placeholder="email@exemplo.com" />
+        </div>
+        <div class="fgroup">
+          <label>Contato de Emergência</label>
+          <input type="text" id="emergencia-nome" placeholder="Nome do contato" />
+        </div>
+        <div class="fgroup">
+          <label>Telefone de Emergência</label>
+          <input type="text" id="emergencia-tel" placeholder="(00) 00000-0000" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. DADOS PROFISSIONAIS -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-briefcase"></i><h2>Dados Profissionais</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2">
+        <div class="fgroup">
+          <label>Cargo / Função <span class="req">*</span></label>
+          <input type="text" id="cargo" placeholder="Ex: Técnico de Segurança, Operador..." />
+        </div>
+        <div class="fgroup">
+          <label>Setor / Departamento <span class="req">*</span></label>
+          <input type="text" id="setor-prof" placeholder="Ex: Manutenção, Produção, RH..." />
+        </div>
+        <div class="fgroup">
+          <label>Data de Admissão <span class="req">*</span></label>
+          <input type="date" id="data-admissao" />
+        </div>
+        <div class="fgroup">
+          <label>Tipo de Contrato</label>
+          <select id="tipo-contrato">
+            <option value="">Selecione...</option>
+            <option>CLT — Indeterminado</option>
+            <option>CLT — Determinado</option>
+            <option>Estágio</option>
+            <option>Aprendiz</option>
+            <option>Terceirizado</option>
+            <option>PJ / Autônomo</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Regime de Trabalho</label>
+          <select id="regime">
+            <option value="">Selecione...</option>
+            <option>Diurno (06h–18h)</option>
+            <option>Noturno (18h–06h)</option>
+            <option>Escala 12×36</option>
+            <option>Escala 5×2</option>
+            <option>Integral / Adm.</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Gestor Imediato</label>
+          <input type="text" id="gestor" placeholder="Nome do gestor responsável" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. DOCUMENTAÇÃO ENTREGUE -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-folder-check"></i><h2>Documentação Entregue</h2></div>
+    <div class="card-body">
+      <p style="font-size:0.83rem;color:var(--muted);margin-bottom:1rem;">Marque os documentos recebidos do colaborador:</p>
+      <div class="checklist" id="docs-checklist">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> RG ou CNH (cópia)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> CPF (cópia)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> PIS / PASEP</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> CTPS (Carteira de Trabalho)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Comprovante de Residência</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Foto 3×4 recente</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Título de Eleitor</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Certidão de Nascimento / Casamento</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Diploma / Certificado de habilitação</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Cartão do Banco (conta salário)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Reservista / Cert. Militar (masc.)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> ASO — Atestado de Saúde Ocupacional</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. SAÚDE OCUPACIONAL -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-heart-pulse"></i><h2>Saúde Ocupacional</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2">
+        <div class="fgroup">
+          <label>Data do ASO</label>
+          <input type="date" id="data-aso" />
+        </div>
+        <div class="fgroup">
+          <label>Resultado do ASO</label>
+          <select id="resultado-aso">
+            <option value="">Selecione...</option>
+            <option>Apto</option>
+            <option>Apto com Restrições</option>
+            <option>Inapto</option>
+          </select>
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Restrições / Observações Médicas</label>
+          <textarea id="restricoes" placeholder="Descreva restrições médicas ou observações relevantes para a função..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. RESPONSABILIDADE RH -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-pen"></i><h2>Responsabilidade e Registro</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2" style="margin-bottom:1.2rem;">
+        <div class="fgroup">
+          <label>Responsável pelo RH <span class="req">*</span></label>
+          <input type="text" id="responsavel-rh" placeholder="Nome do responsável" />
+        </div>
+        <div class="fgroup">
+          <label>Data de Emissão</label>
+          <input type="date" id="data-emissao" readonly />
+        </div>
+      </div>
+      <div class="sig-area">
+        <div class="sig-box"><div class="sig-label">Assinatura — Colaborador</div></div>
+        <div class="sig-box"><div class="sig-label">Assinatura — Responsável RH</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn btn-ghost" onclick="clearForm()"><i class="bi bi-arrow-counterclockwise"></i> Limpar formulário</button>
+    <button class="btn btn-primary" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf"></i> Gerar Formulário de Admissão</button>
+  </div>
+
+</div>
+
+<!-- ERROR MODAL -->
+<div class="overlay" id="error-overlay">
+  <div class="modal">
+    <div class="modal-icon modal-icon--error"><i class="bi bi-exclamation-triangle"></i></div>
+    <h3>Campos obrigatórios</h3>
+    <p>Preencha os itens abaixo antes de gerar o documento:</p>
+    <ul class="modal-missing-list" id="modal-missing-list"></ul>
+    <button class="btn btn-primary" onclick="closeErrorModal()" style="width:100%;justify-content:center;">Entendido</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="overlay" id="success-overlay">
+  <div class="modal">
+    <div class="modal-icon"><i class="bi bi-check-lg"></i></div>
+    <h3>Admissão Registrada com Sucesso</h3>
+    <p>O Formulário de Admissão <strong id="modal-adm-num"></strong> foi gerado e o download do PDF iniciará automaticamente.</p>
+    <div style="display:flex;gap:0.7rem;justify-content:center;">
+      <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-success" onclick="closeModal()"><i class="bi bi-plus-lg"></i> Nova Admissão</button>
+    </div>
+  </div>
+</div>
+
+<div id="pdf-template"></div>
+<script src="main.js"></script>
+</body>
+</html>
