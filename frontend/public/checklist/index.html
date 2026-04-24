@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexform — Checklist de Inspeção</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="#" class="brand">NEXFORMS</a>
+  <div class="user-pill"><i class="bi bi-person-circle"></i><span>Carlos Eduardo · Técnico de Segurança</span></div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div>
+      <h1>Checklist de Inspeção</h1>
+      <p>Preencha todos os campos obrigatórios antes de gerar o relatório.</p>
+    </div>
+    <div class="doc-number">
+      <span>Número da CI</span>
+      <strong id="ci-num">CI-2026-0001</strong>
+    </div>
+  </div>
+
+  <!-- 1. IDENTIFICAÇÃO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-person-badge"></i><h2>Identificação</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-3">
+        <div class="fgroup">
+          <label>Inspetor Responsável <span class="req">*</span></label>
+          <input type="text" id="inspetor" placeholder="Nome completo" value="Carlos Eduardo Mendes" />
+        </div>
+        <div class="fgroup">
+          <label>Matrícula / Registro</label>
+          <input type="text" id="matricula" placeholder="Número de registro" />
+        </div>
+        <div class="fgroup">
+          <label>Data da Inspeção <span class="req">*</span></label>
+          <input type="date" id="data-inspecao" />
+        </div>
+        <div class="fgroup">
+          <label>Setor / Área <span class="req">*</span></label>
+          <input type="text" id="setor" placeholder="Ex: Produção, Utilidades..." />
+        </div>
+        <div class="fgroup">
+          <label>Turno</label>
+          <select id="turno">
+            <option value="">Selecione...</option>
+            <option>Diurno (06h–18h)</option>
+            <option>Noturno (18h–06h)</option>
+            <option>Integral (24h)</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Empresa / Contratada</label>
+          <input type="text" id="empresa" placeholder="Razão social (se aplicável)" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. EQUIPAMENTO / LOCAL -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-gear"></i><h2>Equipamento / Local</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2">
+        <div class="fgroup">
+          <label>Equipamento / Sistema <span class="req">*</span></label>
+          <input type="text" id="equipamento" placeholder="Ex: Compressor, Subestação, Linha 2..." />
+        </div>
+        <div class="fgroup">
+          <label>Tag / Patrimônio</label>
+          <input type="text" id="tag" placeholder="Ex: TAG-0042, PAT-1234..." />
+        </div>
+        <div class="fgroup">
+          <label>Local Específico</label>
+          <input type="text" id="local" placeholder="Ex: Sala de máquinas, Pátio B..." />
+        </div>
+        <div class="fgroup">
+          <label>Planta / Unidade</label>
+          <input type="text" id="planta" placeholder="Ex: Unidade Rio, Planta Norte..." />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. TIPO DE INSPEÇÃO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-clipboard2-check"></i><h2>Tipo de Inspeção</h2></div>
+    <div class="card-body">
+      <div class="fgroup">
+        <label>Classificação <span class="req">*</span></label>
+        <div class="tipo-group">
+          <button class="tipo-btn" data-tipo="Rotineira"        onclick="selectTipo(this)">🔍 Rotineira</button>
+          <button class="tipo-btn" data-tipo="Pré-operacional"  onclick="selectTipo(this)">⚙️ Pré-operacional</button>
+          <button class="tipo-btn" data-tipo="Periódica"        onclick="selectTipo(this)">📅 Periódica</button>
+          <button class="tipo-btn" data-tipo="Extraordinária"   onclick="selectTipo(this)">🚨 Extraordinária</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. ITENS DE VERIFICAÇÃO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-list-check"></i><h2>Itens de Verificação</h2></div>
+    <div class="card-body">
+
+      <p class="group-label">Segurança Física</p>
+      <div class="checklist" id="grupo-seguranca">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Guarda-corpos e proteções instalados</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Vias de acesso desobstruídas</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Sinalização de segurança visível</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Iluminação adequada</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Piso em boas condições</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Ausência de materiais espalhados</div>
+      </div>
+
+      <p class="group-label" style="margin-top:1rem;">Equipamentos de Proteção</p>
+      <div class="checklist" id="grupo-protecao">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> EPIs disponíveis e em bom estado</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Extintores dentro da validade</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Detectores de gás funcionando</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Kit de primeiros socorros disponível</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Mangueiras de incêndio acessíveis</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> LOTO disponível e identificado</div>
+      </div>
+
+      <p class="group-label" style="margin-top:1rem;">Documentação e Registros</p>
+      <div class="checklist" id="grupo-documentacao">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Permissões de trabalho em vigor</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Procedimentos disponíveis no local</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Registros de manutenção atualizados</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Certificações / laudos em dia</div>
+      </div>
+
+      <p class="group-label" style="margin-top:1rem;">Condições Operacionais</p>
+      <div class="checklist" id="grupo-operacional">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Equipamentos funcionando normalmente</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Ausência de ruídos anormais</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Sem vazamentos (óleo, gás, água)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Temperatura dentro dos limites</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Instrumentos de medição calibrados</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Conexões e aterramento íntegros</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5. NÃO CONFORMIDADES -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-exclamation-triangle"></i><h2>Não Conformidades</h2></div>
+    <div class="card-body">
+      <div class="fgroup">
+        <label>Descrição das Não Conformidades Encontradas</label>
+        <textarea id="nao-conformidades" placeholder="Descreva detalhadamente as não conformidades identificadas, indicando localização e grau de risco..."></textarea>
+      </div>
+      <div class="fgroup" style="margin-top:1rem;">
+        <label>Ações Corretivas Recomendadas</label>
+        <textarea id="acoes-corretivas" placeholder="Liste as ações necessárias para correção, responsáveis e prazo estimado..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. RESULTADO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-patch-check"></i><h2>Resultado da Inspeção</h2></div>
+    <div class="card-body">
+      <div class="fgroup">
+        <label>Classificação Final <span class="req">*</span></label>
+        <div class="resultado-group">
+          <button class="resultado-btn" data-resultado="Aprovado"                onclick="selectResultado(this)">✅ Aprovado</button>
+          <button class="resultado-btn" data-resultado="Aprovado com Restrições" onclick="selectResultado(this)">⚠️ Aprovado com Restrições</button>
+          <button class="resultado-btn" data-resultado="Reprovado"               onclick="selectResultado(this)">❌ Reprovado</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. RESPONSABILIDADE -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-pen"></i><h2>Responsabilidade</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2" style="margin-bottom:1.2rem;">
+        <div class="fgroup">
+          <label>Supervisor Responsável</label>
+          <input type="text" id="supervisor" placeholder="Nome do supervisor" />
+        </div>
+        <div class="fgroup">
+          <label>Matrícula do Supervisor</label>
+          <input type="text" id="matricula-supervisor" placeholder="Número de registro" />
+        </div>
+      </div>
+      <div class="sig-area">
+        <div class="sig-box"><div class="sig-label">Assinatura — Inspetor Responsável</div></div>
+        <div class="sig-box"><div class="sig-label">Assinatura — Supervisor / Aprovador</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn btn-ghost" onclick="clearForm()"><i class="bi bi-arrow-counterclockwise"></i> Limpar formulário</button>
+    <button class="btn btn-primary" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf"></i> Gerar Relatório de Inspeção</button>
+  </div>
+
+</div>
+
+<!-- ERROR MODAL -->
+<div class="overlay" id="error-overlay">
+  <div class="modal">
+    <div class="modal-icon modal-icon--error"><i class="bi bi-exclamation-triangle"></i></div>
+    <h3>Campos obrigatórios</h3>
+    <p>Preencha os itens abaixo antes de gerar o relatório:</p>
+    <ul class="modal-missing-list" id="modal-missing-list"></ul>
+    <button class="btn btn-primary" onclick="closeErrorModal()" style="width:100%;justify-content:center;">Entendido</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="overlay" id="success-overlay">
+  <div class="modal">
+    <div class="modal-icon"><i class="bi bi-check-lg"></i></div>
+    <h3>Relatório Gerado com Sucesso</h3>
+    <p>O Checklist de Inspeção <strong id="modal-ci-num"></strong> foi gerado e o download do PDF iniciará automaticamente.</p>
+    <div style="display:flex;gap:0.7rem;justify-content:center;">
+      <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-success" onclick="closeModal()"><i class="bi bi-plus-lg"></i> Nova Inspeção</button>
+    </div>
+  </div>
+</div>
+
+<div id="pdf-template"></div>
+<script src="main.js"></script>
+</body>
+</html>
