@@ -1,3 +1,73 @@
+// ── Máscaras de campo
+function maskCPF(el) {
+  el.addEventListener('input', function () {
+    let v = this.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 9)      v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+    else if (v.length > 6) v = v.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+    else if (v.length > 3) v = v.replace(/^(\d{3})(\d{0,3})/, '$1.$2');
+    this.value = v;
+  });
+}
+
+function maskPhone(el) {
+  el.addEventListener('input', function () {
+    let v = this.value.replace(/\D/g, '').slice(0, 11);
+    if (!v.length) { this.value = ''; return; }
+    if (v.length <= 2)       this.value = `(${v}`;
+    else if (v.length <= 7)  this.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if (v.length <= 10) this.value = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+    else                     this.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  });
+}
+
+function maskCEP(el) {
+  el.addEventListener('input', function () {
+    let v = this.value.replace(/\D/g, '').slice(0, 8);
+    if (v.length > 5) v = `${v.slice(0,5)}-${v.slice(5)}`;
+    this.value = v;
+  });
+}
+
+// ── ViaCEP auto-fill de endereço
+function setupViaCEP() {
+  const cepEl = document.getElementById('cep');
+  cepEl.addEventListener('blur', async function () {
+    const cep = this.value.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+
+    const fields = ['logradouro', 'bairro', 'cidade'];
+    const placeholders = {};
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      placeholders[id] = el.placeholder;
+      el.placeholder = 'Buscando...';
+    });
+
+    try {
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await res.json();
+
+      if (data.erro) {
+        cepEl.style.borderColor = 'var(--red)';
+        setTimeout(() => { cepEl.style.borderColor = ''; }, 2000);
+        return;
+      }
+
+      document.getElementById('logradouro').value = data.logradouro || '';
+      document.getElementById('bairro').value     = data.bairro     || '';
+      document.getElementById('cidade').value     = data.localidade || '';
+      document.getElementById('estado').value     = data.uf         || '';
+      document.getElementById('numero').focus();
+
+    } catch { /* silent — usuário preenche manualmente */ }
+    finally {
+      fields.forEach(id => {
+        document.getElementById(id).placeholder = placeholders[id];
+      });
+    }
+  });
+}
+
 // ── ADM Number
 function genADMNumber() {
   const y = new Date().getFullYear();
@@ -245,3 +315,10 @@ function showErrorModal(missing) {
 function closeErrorModal() { document.getElementById('error-overlay').classList.remove('open'); }
 
 document.getElementById('data-emissao').valueAsDate = new Date();
+
+// ── Aplicar máscaras
+maskCPF(document.getElementById('cpf'));
+maskPhone(document.getElementById('telefone'));
+maskPhone(document.getElementById('emergencia-tel'));
+maskCEP(document.getElementById('cep'));
+setupViaCEP();
