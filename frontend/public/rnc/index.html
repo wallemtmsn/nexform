@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="/rnc/" />
+  <title>Nexform — Registro de Não Conformidade</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../" class="brand">NEXFORMS</a>
+  <div class="user-pill"><i class="bi bi-person-circle"></i><span>Carlos Eduardo · Qualidade</span></div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div>
+      <h1>Registro de Não Conformidade</h1>
+      <p>Identificação, análise e plano de ação corretiva · ISO 9001:2015 — Cláusula 10.2</p>
+    </div>
+    <div class="doc-number">
+      <span>Número do Registro</span>
+      <strong id="rnc-num">RNC-2026-0001</strong>
+    </div>
+  </div>
+
+  <!-- ─── 1. IDENTIFICAÇÃO ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-clipboard2-x"></i><h2>1. Identificação</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-3">
+        <div class="fgroup" style="grid-column: span 2;">
+          <label>Aberto por <span class="req">*</span></label>
+          <input type="text" id="aberto-por" value="Carlos Eduardo Mendes" />
+        </div>
+        <div class="fgroup">
+          <label>Data de Abertura</label>
+          <input type="date" id="data-abertura" readonly />
+        </div>
+        <div class="fgroup" style="grid-column: span 2;">
+          <label>Setor / Área <span class="req">*</span></label>
+          <input type="text" id="setor" placeholder="Onde a NC foi detectada" />
+        </div>
+        <div class="fgroup">
+          <label>Turno</label>
+          <select id="turno">
+            <option value="">Selecione...</option>
+            <option>Diurno (06h–18h)</option>
+            <option>Noturno (18h–06h)</option>
+            <option>Administrativo</option>
+            <option>Escala 12×36</option>
+          </select>
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Empresa / Fornecedor envolvido</label>
+          <input type="text" id="empresa" placeholder="Preencher se a NC envolver fornecedor externo" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 2. CLASSIFICAÇÃO ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-tag"></i><h2>2. Classificação</h2></div>
+    <div class="card-body">
+
+      <div class="field-label">Tipo de Não Conformidade <span class="req">*</span></div>
+      <div class="btn-group tipo-nc-group" style="margin-bottom:1.2rem;">
+        <button class="tipo-nc-btn" data-tipo="Produto" onclick="selectTipoNC(this)"><i class="bi bi-box-seam"></i> Produto</button>
+        <button class="tipo-nc-btn" data-tipo="Processo" onclick="selectTipoNC(this)"><i class="bi bi-gear"></i> Processo</button>
+        <button class="tipo-nc-btn" data-tipo="Serviço" onclick="selectTipoNC(this)"><i class="bi bi-briefcase"></i> Serviço</button>
+        <button class="tipo-nc-btn" data-tipo="Fornecedor" onclick="selectTipoNC(this)"><i class="bi bi-truck"></i> Fornecedor</button>
+        <button class="tipo-nc-btn" data-tipo="Segurança" onclick="selectTipoNC(this)"><i class="bi bi-shield-exclamation"></i> Segurança</button>
+        <button class="tipo-nc-btn" data-tipo="Ambiental" onclick="selectTipoNC(this)"><i class="bi bi-tree"></i> Ambiental</button>
+        <button class="tipo-nc-btn" data-tipo="Sistema" onclick="selectTipoNC(this)"><i class="bi bi-diagram-3"></i> Sistema</button>
+        <button class="tipo-nc-btn" data-tipo="Documentação" onclick="selectTipoNC(this)"><i class="bi bi-file-earmark-x"></i> Documentação</button>
+      </div>
+
+      <div class="field-label">Origem da Detecção <span class="req">*</span></div>
+      <div class="btn-group origem-group" style="margin-bottom:1.2rem;">
+        <button class="origem-btn" data-origem="Inspeção de Recebimento" onclick="selectOrigem(this)">Inspeção de Recebimento</button>
+        <button class="origem-btn" data-origem="Processo Produtivo" onclick="selectOrigem(this)">Processo Produtivo</button>
+        <button class="origem-btn" data-origem="Reclamação de Cliente" onclick="selectOrigem(this)">Reclamação de Cliente</button>
+        <button class="origem-btn" data-origem="Auditoria Interna" onclick="selectOrigem(this)">Auditoria Interna</button>
+        <button class="origem-btn" data-origem="Auditoria Externa" onclick="selectOrigem(this)">Auditoria Externa</button>
+        <button class="origem-btn" data-origem="Campo / Pós-venda" onclick="selectOrigem(this)">Campo / Pós-venda</button>
+        <button class="origem-btn" data-origem="Auto-declarado" onclick="selectOrigem(this)">Auto-declarado</button>
+        <button class="origem-btn" data-origem="Monitoramento Interno" onclick="selectOrigem(this)">Monitoramento Interno</button>
+      </div>
+
+      <div class="form-grid col-2">
+        <div>
+          <div class="field-label">Gravidade <span class="req">*</span></div>
+          <div class="btn-group gravidade-group">
+            <button class="grav-btn" data-grav="Menor" onclick="selectGravidade(this)">
+              <span class="grav-dot grav-menor"></span> Menor
+            </button>
+            <button class="grav-btn" data-grav="Maior" onclick="selectGravidade(this)">
+              <span class="grav-dot grav-maior"></span> Maior
+            </button>
+            <button class="grav-btn" data-grav="Crítica" onclick="selectGravidade(this)">
+              <span class="grav-dot grav-critica"></span> Crítica
+            </button>
+          </div>
+        </div>
+        <div>
+          <div class="field-label">Reincidência</div>
+          <div class="btn-group reincidencia-group">
+            <button class="reinc-btn" data-reinc="Não" onclick="selectReincidencia(this)">Não</button>
+            <button class="reinc-btn" data-reinc="Sim" onclick="selectReincidencia(this)">Sim</button>
+          </div>
+          <div id="reinc-ref-wrap" class="reinc-ref hidden">
+            <input type="text" id="rnc-anterior" placeholder="Nº da RNC anterior (ex: RNC-2025-0042)" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 3. DESCRIÇÃO DA NÃO CONFORMIDADE ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-exclamation-triangle"></i><h2>3. Descrição da Não Conformidade</h2></div>
+    <div class="card-body">
+      <div class="form-grid col-2" style="margin-bottom:1rem;">
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Descrição detalhada <span class="req">*</span></label>
+          <textarea id="descricao" rows="4" placeholder="Descreva a não conformidade de forma clara e objetiva: o quê, quando, como foi detectada..."></textarea>
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Requisito violado / Referência normativa</label>
+          <input type="text" id="requisito" placeholder="Ex: ISO 9001:2015 cl. 8.4, Procedimento PQ-012, Especificação Técnica ET-007..." />
+        </div>
+        <div class="fgroup">
+          <label>Produto / Equipamento / Documento afetado</label>
+          <input type="text" id="produto-afetado" placeholder="Identificação do item afetado" />
+        </div>
+        <div class="fgroup">
+          <label>Quantidade / Lote / Revisão</label>
+          <input type="text" id="quantidade-lote" placeholder="Ex: 150 peças · Lote 2025-04A" />
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Impacto estimado</label>
+          <textarea id="impacto" rows="2" placeholder="Descreva o impacto: parada de linha, cliente afetado, custo estimado, risco de segurança..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 4. CONTENÇÃO IMEDIATA ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-shield-fill-exclamation"></i><h2>4. Contenção Imediata</h2></div>
+    <div class="card-body">
+      <p class="section-hint">Ação tomada imediatamente para controlar o problema e proteger o cliente / processo. <strong>ISO 9001:2015 — 10.2.1 a)</strong></p>
+      <div class="form-grid col-2" style="margin-bottom:1rem;">
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Ação de contenção <span class="req">*</span></label>
+          <textarea id="contencao" rows="3" placeholder="Descreva o que foi feito imediatamente: segregação, retrabalho, recall parcial, comunicação ao cliente..."></textarea>
+        </div>
+        <div class="fgroup">
+          <label>Responsável pela contenção <span class="req">*</span></label>
+          <input type="text" id="responsavel-contencao" placeholder="Nome do responsável" />
+        </div>
+        <div class="fgroup">
+          <label>Data da contenção</label>
+          <input type="date" id="data-contencao" />
+        </div>
+      </div>
+      <div class="field-label">Status da Contenção</div>
+      <div class="btn-group status-group">
+        <button class="status-btn" data-status="Pendente" onclick="selectContencaoStatus(this)"><span class="status-dot dot-pendente"></span> Pendente</button>
+        <button class="status-btn" data-status="Executada" onclick="selectContencaoStatus(this)"><span class="status-dot dot-executada"></span> Executada</button>
+        <button class="status-btn" data-status="Verificada" onclick="selectContencaoStatus(this)"><span class="status-dot dot-verificada"></span> Verificada</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 5. ANÁLISE DE CAUSA RAIZ ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-search"></i><h2>5. Análise de Causa Raiz</h2></div>
+    <div class="card-body">
+      <p class="section-hint">Determinar as causas da NC para garantir que não se repita. <strong>ISO 9001:2015 — 10.2.1 b)</strong></p>
+
+      <div class="field-label" style="margin-bottom:0.6rem;">Ferramenta de Análise</div>
+      <div class="btn-group ferramenta-group" style="margin-bottom:1.4rem;">
+        <button class="ferr-btn active-ferr" data-ferr="5-porques" onclick="selectFerramenta(this)">5 Porquês</button>
+        <button class="ferr-btn" data-ferr="ishikawa" onclick="selectFerramenta(this)">Ishikawa (6M)</button>
+        <button class="ferr-btn" data-ferr="livre" onclick="selectFerramenta(this)">Análise Livre</button>
+      </div>
+
+      <!-- 5 Porquês -->
+      <div id="block-5porques">
+        <div class="porques-chain">
+          <div class="porque-item">
+            <div class="porque-num">Por quê 1?</div>
+            <textarea id="pq1" rows="2" placeholder="Por que ocorreu a não conformidade?"></textarea>
+          </div>
+          <div class="porque-arrow"><i class="bi bi-arrow-down"></i></div>
+          <div class="porque-item">
+            <div class="porque-num">Por quê 2?</div>
+            <textarea id="pq2" rows="2" placeholder="Por que ocorreu o motivo acima?"></textarea>
+          </div>
+          <div class="porque-arrow"><i class="bi bi-arrow-down"></i></div>
+          <div class="porque-item">
+            <div class="porque-num">Por quê 3?</div>
+            <textarea id="pq3" rows="2" placeholder="Por que ocorreu o motivo acima?"></textarea>
+          </div>
+          <div class="porque-arrow"><i class="bi bi-arrow-down"></i></div>
+          <div class="porque-item">
+            <div class="porque-num">Por quê 4?</div>
+            <textarea id="pq4" rows="2" placeholder="Por que ocorreu o motivo acima?"></textarea>
+          </div>
+          <div class="porque-arrow"><i class="bi bi-arrow-down"></i></div>
+          <div class="porque-item">
+            <div class="porque-num">Por quê 5?</div>
+            <textarea id="pq5" rows="2" placeholder="Por que ocorreu o motivo acima?"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ishikawa 6M -->
+      <div id="block-ishikawa" class="hidden">
+        <div class="ishikawa-grid">
+          <div class="ishikawa-item">
+            <div class="ishi-label"><i class="bi bi-gear-fill"></i> Máquina</div>
+            <textarea id="ishi-maquina" rows="2" placeholder="Falha de equipamento, manutenção, calibração..."></textarea>
+          </div>
+          <div class="ishikawa-item">
+            <div class="ishi-label"><i class="bi bi-diagram-2-fill"></i> Método</div>
+            <textarea id="ishi-metodo" rows="2" placeholder="Procedimento inadequado, instrução de trabalho, processo..."></textarea>
+          </div>
+          <div class="ishikawa-item">
+            <div class="ishi-label"><i class="bi bi-person-fill"></i> Mão de Obra</div>
+            <textarea id="ishi-mdo" rows="2" placeholder="Falta de treinamento, erro humano, falta de atenção..."></textarea>
+          </div>
+          <div class="ishikawa-item">
+            <div class="ishi-label"><i class="bi bi-box-fill"></i> Material</div>
+            <textarea id="ishi-material" rows="2" placeholder="Matéria-prima fora de especificação, lote com defeito..."></textarea>
+          </div>
+          <div class="ishikawa-item">
+            <div class="ishi-label"><i class="bi bi-thermometer-half"></i> Meio Ambiente</div>
+            <textarea id="ishi-ambiente" rows="2" placeholder="Temperatura, umidade, vibração, contaminação..."></textarea>
+          </div>
+          <div class="ishikawa-item">
+            <div class="ishi-label"><i class="bi bi-rulers"></i> Medição</div>
+            <textarea id="ishi-medicao" rows="2" placeholder="Instrumento descalibrado, método de medição incorreto..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Livre -->
+      <div id="block-livre" class="hidden">
+        <div class="fgroup">
+          <label>Análise de causa raiz</label>
+          <textarea id="causa-livre" rows="5" placeholder="Descreva livremente a análise de causa raiz realizada..."></textarea>
+        </div>
+      </div>
+
+      <!-- Conclusão sempre visível -->
+      <div class="causa-raiz-conclusao">
+        <div class="fgroup">
+          <label>Causa Raiz Conclusiva <span class="req">*</span></label>
+          <textarea id="causa-raiz" rows="3" placeholder="Descreva a causa raiz final identificada pela análise..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 6. AÇÃO CORRETIVA ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-wrench-adjustable"></i><h2>6. Ação Corretiva</h2></div>
+    <div class="card-body">
+      <p class="section-hint">Eliminar a causa da NC para que não se repita. <strong>ISO 9001:2015 — 10.2.1 c)</strong></p>
+      <div class="form-grid col-2" style="margin-bottom:1rem;">
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Descrição da ação corretiva <span class="req">*</span></label>
+          <textarea id="acao-corretiva" rows="3" placeholder="Descreva a ação implementada para eliminar a causa raiz..."></textarea>
+        </div>
+        <div class="fgroup">
+          <label>Responsável <span class="req">*</span></label>
+          <input type="text" id="resp-corretiva" placeholder="Nome do responsável pela execução" />
+        </div>
+        <div class="fgroup">
+          <label>Prazo para conclusão <span class="req">*</span></label>
+          <input type="date" id="prazo-corretiva" />
+        </div>
+      </div>
+      <div class="field-label">Status</div>
+      <div class="btn-group status-group">
+        <button class="status-btn" data-status="Pendente" onclick="selectAcaoCorretivaStatus(this)"><span class="status-dot dot-pendente"></span> Pendente</button>
+        <button class="status-btn" data-status="Em Andamento" onclick="selectAcaoCorretivaStatus(this)"><span class="status-dot dot-andamento"></span> Em Andamento</button>
+        <button class="status-btn" data-status="Concluída" onclick="selectAcaoCorretivaStatus(this)"><span class="status-dot dot-verificada"></span> Concluída</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 7. AÇÃO PREVENTIVA ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-shield-check"></i><h2>7. Ação Preventiva</h2></div>
+    <div class="card-body">
+      <p class="section-hint">Eliminar a causa de uma potencial NC antes que ocorra; atualizar riscos e oportunidades se aplicável. <strong>ISO 9001:2015 — 10.2.1 e), f)</strong></p>
+      <div class="form-grid col-2" style="margin-bottom:1rem;">
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Descrição da ação preventiva</label>
+          <textarea id="acao-preventiva" rows="3" placeholder="Descreva ações para evitar que a NC ocorra em outros processos, produtos ou clientes similares..."></textarea>
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Atualização de riscos e oportunidades (ISO 9001 cl. 6.1)</label>
+          <textarea id="riscos-atualizados" rows="2" placeholder="Descreva se o contexto de riscos/oportunidades foi revisado em função desta NC..."></textarea>
+        </div>
+        <div class="fgroup">
+          <label>Responsável</label>
+          <input type="text" id="resp-preventiva" placeholder="Nome do responsável" />
+        </div>
+        <div class="fgroup">
+          <label>Prazo</label>
+          <input type="date" id="prazo-preventiva" />
+        </div>
+      </div>
+      <div class="field-label">Status</div>
+      <div class="btn-group status-group">
+        <button class="status-btn" data-status="Pendente" onclick="selectAcaoPreventiva(this)"><span class="status-dot dot-pendente"></span> Pendente</button>
+        <button class="status-btn" data-status="Em Andamento" onclick="selectAcaoPreventiva(this)"><span class="status-dot dot-andamento"></span> Em Andamento</button>
+        <button class="status-btn" data-status="Concluída" onclick="selectAcaoPreventiva(this)"><span class="status-dot dot-verificada"></span> Concluída</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 8. VERIFICAÇÃO DE EFICÁCIA ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-patch-check"></i><h2>8. Verificação de Eficácia</h2></div>
+    <div class="card-body">
+      <p class="section-hint">Revisar a eficácia da ação corretiva tomada. <strong>ISO 9001:2015 — 10.2.1 d)</strong></p>
+      <div class="form-grid col-2" style="margin-bottom:1rem;">
+        <div class="fgroup">
+          <label>Data da verificação</label>
+          <input type="date" id="data-verificacao" />
+        </div>
+        <div class="fgroup">
+          <label>Verificador / Auditor</label>
+          <input type="text" id="verificador" placeholder="Nome do responsável pela verificação" />
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Evidência da verificação</label>
+          <textarea id="evidencia-verificacao" rows="3" placeholder="Descreva a evidência que comprova a eficácia: resultados de inspeção, indicadores, registros, re-auditoria..."></textarea>
+        </div>
+      </div>
+      <div class="field-label">A ação foi eficaz?</div>
+      <div class="btn-group eficacia-group">
+        <button class="efic-btn" data-efic="Sim" onclick="selectEficacia(this)"><i class="bi bi-check-circle"></i> Sim — Eficaz</button>
+        <button class="efic-btn" data-efic="Em Observação" onclick="selectEficacia(this)"><i class="bi bi-eye"></i> Em Observação</button>
+        <button class="efic-btn" data-efic="Não" onclick="selectEficacia(this)"><i class="bi bi-x-circle"></i> Não — Reabrir RNC</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 9. ENCERRAMENTO ─── -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-check2-all"></i><h2>9. Encerramento e Responsabilidade</h2></div>
+    <div class="card-body">
+      <p class="section-hint">Evidência de informação documentada retida conforme <strong>ISO 9001:2015 — 10.2.2</strong></p>
+      <div class="form-grid col-2" style="margin-bottom:1rem;">
+        <div class="fgroup">
+          <label>Responsável pelo encerramento <span class="req">*</span></label>
+          <input type="text" id="responsavel-encerramento" placeholder="Nome do responsável" />
+        </div>
+        <div class="fgroup">
+          <label>Data de encerramento</label>
+          <input type="date" id="data-encerramento" />
+        </div>
+        <div class="fgroup" style="grid-column: 1 / -1;">
+          <label>Observações finais</label>
+          <textarea id="obs-finais" rows="2" placeholder="Lições aprendidas, recomendações, informações relevantes para o SGQ..."></textarea>
+        </div>
+      </div>
+      <div class="field-label">Status Final da RNC</div>
+      <div class="btn-group status-final-group">
+        <button class="sf-btn" data-sf="Aberta" onclick="selectStatusFinal(this)"><span class="status-dot dot-pendente"></span> Aberta</button>
+        <button class="sf-btn" data-sf="Em Andamento" onclick="selectStatusFinal(this)"><span class="status-dot dot-andamento"></span> Em Andamento</button>
+        <button class="sf-btn" data-sf="Aguardando Verificação" onclick="selectStatusFinal(this)"><span class="status-dot dot-aguard"></span> Aguardando Verificação</button>
+        <button class="sf-btn" data-sf="Encerrada" onclick="selectStatusFinal(this)"><span class="status-dot dot-verificada"></span> Encerrada</button>
+      </div>
+      <div class="sig-area" style="margin-top:1.5rem;">
+        <div class="sig-box"><div class="sig-label">Assinatura — Responsável pela NC</div></div>
+        <div class="sig-box"><div class="sig-label">Assinatura — Gestor / Aprovador</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn btn-ghost" onclick="clearForm()"><i class="bi bi-arrow-counterclockwise"></i> Limpar formulário</button>
+    <button class="btn btn-primary" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf"></i> Gerar Registro de NC</button>
+  </div>
+
+</div>
+
+<!-- ERROR MODAL -->
+<div class="overlay" id="error-overlay">
+  <div class="modal">
+    <div class="modal-icon modal-icon--error"><i class="bi bi-exclamation-triangle"></i></div>
+    <h3>Campos obrigatórios</h3>
+    <p>Preencha os itens abaixo antes de gerar o documento:</p>
+    <ul class="modal-missing-list" id="modal-missing-list"></ul>
+    <button class="btn btn-primary" onclick="closeErrorModal()" style="width:100%;justify-content:center;">Entendido</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="overlay" id="success-overlay">
+  <div class="modal">
+    <div class="modal-icon"><i class="bi bi-check-lg"></i></div>
+    <h3>RNC Registrada com Sucesso</h3>
+    <p>O Registro de Não Conformidade <strong id="modal-rnc-num"></strong> foi gerado e o download do PDF iniciará automaticamente.</p>
+    <div style="display:flex;gap:0.7rem;justify-content:center;">
+      <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-success" onclick="closeModal()"><i class="bi bi-plus-lg"></i> Nova RNC</button>
+    </div>
+  </div>
+</div>
+
+<div id="pdf-template"></div>
+<script src="main.js"></script>
+</body>
+</html>
