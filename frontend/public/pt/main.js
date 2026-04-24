@@ -1,4 +1,22 @@
-// ── PT Number
+// ── Máscara CNPJ / CPF (auto-detecta pelo tamanho)
+  function maskCNPJCPF(el) {
+    el.addEventListener('input', function () {
+      let v = this.value.replace(/\D/g, '').slice(0, 14);
+      if (v.length <= 11) {
+        if (v.length > 9)      v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+        else if (v.length > 6) v = v.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+        else if (v.length > 3) v = v.replace(/^(\d{3})(\d{0,3})/, '$1.$2');
+      } else {
+        if (v.length > 12)     v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, '$1.$2.$3/$4-$5');
+        else if (v.length > 8) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4})/, '$1.$2.$3/$4');
+        else if (v.length > 5) v = v.replace(/^(\d{2})(\d{3})(\d{0,3})/, '$1.$2.$3');
+        else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,3})/, '$1.$2');
+      }
+      this.value = v;
+    });
+  }
+
+  // ── PT Number
   function genPTNumber() {
     const y = new Date().getFullYear();
     const n = String(Math.floor(Math.random() * 9000) + 1000);
@@ -285,3 +303,6 @@
 
   // Set today as default start date
   document.getElementById('data-inicio').valueAsDate = new Date();
+
+  // Aplicar máscara CNPJ/CPF
+  maskCNPJCPF(document.getElementById('cnpj'));
