@@ -29,6 +29,14 @@ const empresas = [
         status: 'ativa',
         rota: '/checklist',
       },
+      {
+        id: 'inspecao-carga',
+        nome: 'Inspeção de Carga',
+        descricao: 'Checklist de inspeção de carga para operações terrestres e marítimas, com aprovação do líder.',
+        icone: 'bi-box-seam',
+        status: 'ativa',
+        rota: '/inspecao-carga',
+      },
     ],
     usuarios: [
       {

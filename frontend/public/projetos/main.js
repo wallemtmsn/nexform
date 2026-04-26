@@ -116,6 +116,20 @@ const PROJECTS = {
     ],
     route: '../rnc/',
   },
+  ic: {
+    module: 'module_01.eslingas · module_02.equipamento · module_03.drops',
+    title: 'Checklist de Inspeção de Carga',
+    desc: 'Digitalização do checklist de inspeção para operações terrestres e marítimas. 7 seções com 38 itens (C/NC/NA), identificação por tipo de operação e aprovação do líder com número de controle IC-YYYY-NNNN.',
+    tags: ['Terrestre', 'Marítimo', 'DROPs', 'Eslingas', 'Equipamento', 'C/NC/NA'],
+    features: [
+      { icon: 'bi-truck',              title: 'Toggle Terrestre / Marítimo',             desc: 'Campos do cabeçalho mudam automaticamente conforme o tipo de operação: motorista/placa ou embarcação/manifesto.' },
+      { icon: 'bi-clipboard-check',    title: '38 itens em 7 seções (C/NC/NA)',          desc: 'Eslingas, Equipamento, Equipamento Utilizado, Químicos/Perigosos, Operação, DROPs e Inspeção Final.' },
+      { icon: 'bi-arrow-down-circle',  title: 'Inspeção de Objetos Soltos (DROPs)',      desc: 'Seção dedicada à inspeção de objetos com potencial de queda durante içamento e movimentação de carga.' },
+      { icon: 'bi-shield-check',       title: 'Aprovação do líder integrada',            desc: 'Fluxo de aprovação/reprovação pelo líder com registro do finalizador, data e dashboard de acompanhamento.' },
+      { icon: 'bi-patch-check',        title: 'Número de controle IC único',             desc: 'Cada inspeção recebe número IC-YYYY-NNNN para rastreabilidade e arquivo de conformidade.' },
+    ],
+    route: '../inspecao-carga/',
+  },
 };
 
 /* ── 3. MODAL MOBILE ── */
