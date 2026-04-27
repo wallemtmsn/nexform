@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="/inspecao-carga/" />
+  <title>Nexform — Inspeção de Carga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../projetos/" class="brand">NEXFORMS</a>
+  <a href="../projetos/" class="back-link"><i class="bi bi-arrow-left"></i> Projetos</a>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div>
+      <h1>Checklist de Inspeção de Carga</h1>
+      <p>Preencha todos os campos e itens antes de finalizar a inspeção.</p>
+    </div>
+    <div class="doc-number">
+      <span>Número</span>
+      <strong id="ic-num">IC-2026-0000</strong>
+    </div>
+  </div>
+
+  <div class="progress-outer">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+  <p class="progress-label" id="progress-label">0 / 38 itens respondidos (0%)</p>
+
+  <!-- IDENTIFICAÇÃO -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-info-circle"></i><h2>Identificação</h2></div>
+    <div class="card-body">
+
+      <div class="tipo-toggle">
+        <button class="tipo-btn tipo-btn--active" id="btn-terrestre" onclick="setTipo('terrestre')">
+          <i class="bi bi-truck"></i> Terrestre
+        </button>
+        <button class="tipo-btn" id="btn-maritimo" onclick="setTipo('maritimo')">
+          <i class="bi bi-water"></i> Marítimo
+        </button>
+      </div>
+
+      <div class="form-grid col-3" style="margin-top:1rem;">
+        <div class="fgroup span-2">
+          <label>Cliente <span class="req">*</span></label>
+          <input type="text" id="cliente" placeholder="Nome do cliente" />
+        </div>
+        <div class="fgroup">
+          <label>Data <span class="req">*</span></label>
+          <input type="date" id="data" />
+        </div>
+      </div>
+
+      <!-- Campos Terrestre -->
+      <div id="campos-terrestre" class="form-grid col-3" style="margin-top:1rem;">
+        <div class="fgroup">
+          <label>Motorista <span class="req">*</span></label>
+          <input type="text" id="motorista" placeholder="Nome do motorista" />
+        </div>
+        <div class="fgroup">
+          <label>Romaneio / Agendamento</label>
+          <input type="text" id="romaneio" placeholder="Nº romaneio" />
+        </div>
+        <div class="fgroup">
+          <label>Transportadora <span class="req">*</span></label>
+          <input type="text" id="transportadora" placeholder="Nome da transportadora" />
+        </div>
+        <div class="fgroup">
+          <label>Placa <span class="req">*</span></label>
+          <input type="text" id="placa" placeholder="Ex: ABC-1234" maxlength="8" oninput="this.value=this.value.toUpperCase()" />
+        </div>
+        <div class="fgroup">
+          <label>Hora</label>
+          <input type="time" id="hora" />
+        </div>
+        <div class="fgroup">
+          <label>Inspecionado por</label>
+          <input type="text" id="inspetor" placeholder="Nome do inspetor" />
+        </div>
+      </div>
+
+      <!-- Campos Marítimo -->
+      <div id="campos-maritimo" class="form-grid col-3" style="margin-top:1rem;display:none;">
+        <div class="fgroup span-2">
+          <label>Embarcação <span class="req">*</span></label>
+          <input type="text" id="embarcacao" placeholder="Nome ou identificação da embarcação" />
+        </div>
+        <div class="fgroup">
+          <label>Hora</label>
+          <input type="time" id="hora-mar" />
+        </div>
+        <div class="fgroup span-2">
+          <label>Manifesto / MSL <span class="req">*</span></label>
+          <input type="text" id="manifesto" placeholder="Número do manifesto ou MSL" />
+        </div>
+        <div class="fgroup">
+          <label>Inspecionado por</label>
+          <input type="text" id="inspetor-mar" placeholder="Nome do inspetor" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEGENDA -->
+  <div class="legenda">
+    <span><strong>C</strong> = Conforme</span>
+    <span><strong>NC</strong> = Não Conforme</span>
+    <span><strong>NA</strong> = Não Aplicável</span>
+  </div>
+
+  <!-- SEÇÕES (geradas pelo JS) -->
+  <div id="secoes"></div>
+
+  <!-- OBSERVAÇÕES E ASSINATURAS -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-chat-left-text"></i><h2>Observações e Assinaturas</h2></div>
+    <div class="card-body">
+      <div class="fgroup" style="margin-bottom:1.5rem;">
+        <label>Observações gerais (opcional)</label>
+        <textarea id="obs-geral" placeholder="Registre qualquer observação adicional sobre a inspeção..."></textarea>
+      </div>
+      <div class="sig-area">
+        <div class="sig-box">
+          <div class="sig-label">Inspecionado por</div>
+        </div>
+        <div class="sig-box sig-box--pending">
+          <div class="sig-value-pending">Aguardando aprovação do líder</div>
+          <div class="sig-label">Finalizado por</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn btn-ghost" onclick="novaInspecao()"><i class="bi bi-arrow-counterclockwise"></i> Nova Inspeção</button>
+    <button class="btn btn-primary" onclick="gerarPDF()"><i class="bi bi-file-earmark-pdf"></i> Gerar Relatório</button>
+  </div>
+
+</div>
+
+<!-- ERROR MODAL -->
+<div class="overlay" id="error-overlay">
+  <div class="modal">
+    <div class="modal-icon modal-icon--error"><i class="bi bi-exclamation-triangle"></i></div>
+    <h3>Campos obrigatórios</h3>
+    <p>Corrija os itens abaixo antes de gerar o relatório:</p>
+    <ul class="modal-missing-list" id="modal-missing-list"></ul>
+    <button class="btn btn-primary" onclick="closeErrorModal()" style="width:100%;justify-content:center;">Entendido</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="overlay" id="success-overlay">
+  <div class="modal">
+    <div class="modal-icon"><i class="bi bi-check-lg"></i></div>
+    <h3>Relatório Gerado com Sucesso</h3>
+    <p>O Checklist de Inspeção de Carga <strong id="modal-ic-num"></strong> foi gerado e o download iniciará automaticamente.</p>
+    <div style="display:flex;gap:0.7rem;justify-content:center;">
+      <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-success" onclick="novaInspecao();closeModal()"><i class="bi bi-plus-lg"></i> Nova Inspeção</button>
+    </div>
+  </div>
+</div>
+
+<div id="pdf-template"></div>
+<script src="main.js"></script>
+</body>
+</html>
