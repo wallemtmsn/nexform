@@ -116,6 +116,21 @@ const PROJECTS = {
     ],
     route: '../rnc/',
   },
+  prontidao: {
+    module: 'module_01.cognitivo · module_02.psicossocial · module_03.semáforo',
+    title: 'NEXFORMS Prontidão — Avaliação Pré-Jornada',
+    desc: 'Avaliação diária pré-jornada que combina teste cognitivo de atenção e reação com questionário psicossocial voluntário e confidencial. Classifica o colaborador em Verde, Amarelo ou Vermelho antes do início do turno.',
+    tags: ['Teste Cognitivo', 'Psicossocial', 'SST', 'NR-1', 'NR-11', 'NR-12', 'ISO 45003', 'Semáforo'],
+    features: [
+      { icon: 'bi-speedometer2',  title: 'Teste cognitivo de 45 segundos',              desc: 'Figuras aparecem em sequência; o colaborador toca ao reconhecer a figura-alvo. Mede acertos, perdas, falsos alarmes e tempo de reação em ms.' },
+      { icon: 'bi-emoji-smile',   title: 'Questionário psicossocial voluntário',         desc: 'Avalia sono, humor, família, finanças, saúde e relações no trabalho. Confidencial — visto apenas pelo psicólogo da empresa.' },
+      { icon: 'bi-circle-half',   title: 'Semáforo Verde / Amarelo / Vermelho',          desc: 'Score combinado (60% cognitivo + 40% psicossocial) gera a classificação de prontidão em tempo real para o gestor.' },
+      { icon: 'bi-grid-1x2',      title: 'Dashboard por turno',                         desc: 'Painel com todos os colaboradores avaliados no turno, nível de cada um e alertas de ação necessária para nível Vermelho.' },
+      { icon: 'bi-patch-check',   title: 'Conformidade NR-1, NR-11, NR-12, ISO 45003',  desc: 'Fundamentado nas normas regulamentadoras e na ISO 45003 para gestão de riscos psicossociais no trabalho.' },
+    ],
+    route: '../prontidao-app/',
+    route2: '../prontidao/',
+  },
   ic: {
     module: 'module_01.eslingas · module_02.equipamento · module_03.drops',
     title: 'Checklist de Inspeção de Carga',
@@ -164,9 +179,19 @@ function openModal(projectId) {
         </li>
       `).join('')}
     </ul>
-    <a href="${p.route}" class="modal-access-btn">
-      <i class="bi bi-box-arrow-in-right"></i> acessar sistema
-    </a>
+    ${p.route2
+      ? `<div class="modal-btn-group">
+          <a href="${p.route}" class="modal-access-btn">
+            <i class="bi bi-box-arrow-in-right"></i> acessar sistema
+          </a>
+          <a href="${p.route2}" class="modal-info-btn">
+            <i class="bi bi-info-circle"></i> conhecer sistema
+          </a>
+        </div>`
+      : `<a href="${p.route}" class="modal-access-btn">
+          <i class="bi bi-box-arrow-in-right"></i> acessar sistema
+        </a>`
+    }
     <p class="modal-access-note">// requer login com credenciais NEXFORMS</p>
   `;
 
