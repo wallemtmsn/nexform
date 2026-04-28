@@ -136,14 +136,14 @@ section{padding:90px 5%;position:relative;z-index:1;}
 .progress-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;margin-bottom:8px;transition:all .3s;}
 .progress-item.active{background:var(--teal)15;border:1px solid var(--teal)33;}
 .progress-item.done{opacity:.5;}
-.pi-icon{width:36px;height:36px;border-radius:10px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.pi-icon{width:36px;height:36px;border-radius:10px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:13px;font-family:'Fraunces',Georgia,serif;font-weight:800;color:var(--teal);flex-shrink:0;}
 .pi-label{font-size:13px;font-weight:600;}
 .pi-sub{font-size:11px;color:var(--gray);}
 .pi-check{margin-left:auto;color:var(--green);font-size:16px;}
 
 .prediz-bg{background:var(--navy2);}
 .prediz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:48px;}
-.prediz-tag{background:var(--navy3);border:1px solid #ffffff0a;border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:12px;transition:all .3s;}
+.prediz-tag{background:var(--navy3);border:1px solid #ffffff0a;border-radius:12px;padding:16px 20px;display:flex;align-items:center;transition:all .3s;}
 .prediz-tag:hover{border-color:var(--teal)44;transform:translateY(-3px);}
 .prediz-icon{font-size:24px;}
 .prediz-label{font-size:13px;font-weight:600;color:var(--white);}
@@ -272,6 +272,29 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
   .impl-steps::before{display:none;}
   .privacy-band{grid-template-columns:1fr;}
   nav .nav-links{display:none;}
+}
+
+/* ─── GRIDS RESPONSIVOS ─── */
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:52px;align-items:start;}
+.impl-intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:52px;}
+
+@media(max-width:768px){
+  section{padding:60px 4%;}
+  .prediz-grid{grid-template-columns:1fr;}
+  .cf-grid{grid-template-columns:1fr;gap:36px;}
+  .impl-intro-grid{grid-template-columns:1fr;}
+  .impl-intro-img{display:none;}
+  .hero-stats{gap:16px;flex-wrap:wrap;}
+  .hero-stats .hero-stat-n{font-size:26px;}
+  .privacy-band{padding:50px 4%;}
+  .diff-grid{grid-template-columns:1fr;}
+  .semaforo-grid{grid-template-columns:1fr;}
+  .devices-grid{grid-template-columns:1fr;}
+  .benefits-grid{grid-template-columns:1fr;}
+  .impl-steps{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .hero{padding:110px 4% 60px;}
+  .hero-desc{font-size:15px;}
 }
 </style>
 </head>
@@ -442,10 +465,10 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
         <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--navy) 0%,transparent 60%);"></div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:24px;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div class="pillar"><div class="pillar-name">⚡ Atenção</div><div class="pillar-desc">Seletiva e sustentada</div></div>
-            <div class="pillar"><div class="pillar-name">🎯 Reação</div><div class="pillar-desc">Tempo de resposta</div></div>
-            <div class="pillar"><div class="pillar-name">🧠 Emocional</div><div class="pillar-desc">Humor e estresse</div></div>
-            <div class="pillar"><div class="pillar-name">🏠 Social</div><div class="pillar-desc">Família e finanças</div></div>
+            <div class="pillar"><div class="pillar-name">Atenção</div><div class="pillar-desc">Seletiva e sustentada</div></div>
+            <div class="pillar"><div class="pillar-name">Reação</div><div class="pillar-desc">Tempo de resposta</div></div>
+            <div class="pillar"><div class="pillar-name">Emocional</div><div class="pillar-desc">Humor e estresse</div></div>
+            <div class="pillar"><div class="pillar-name">Social</div><div class="pillar-desc">Família e finanças</div></div>
           </div>
         </div>
         <div style="position:absolute;top:16px;right:16px;background:var(--teal);color:var(--navy);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:1px;">Base Científica</div>
@@ -460,7 +483,7 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
   <div class="section-divider reveal"></div>
   <h2 class="section-title reveal">Como <em>funciona</em></h2>
   <p class="section-desc reveal">Fluxo completo em menos de 3 minutos, antes do início de cada turno.</p>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:52px;align-items:start;">
+  <div class="cf-grid">
     <div class="steps-wrap">
       <div class="steps-line"></div>
       <div class="step reveal"><div class="step-num">1</div><div class="step-body"><h3>Identificação</h3><p>O colaborador informa nome e função. Pode ser feito via totem, tablet, smartphone ou desktop — sem instalação.</p><span class="step-time">~15 segundos</span></div></div>
@@ -471,11 +494,11 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
     </div>
     <div class="steps-visual reveal">
       <div style="font-size:11px;color:var(--teal);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:20px;">Fluxo do colaborador</div>
-      <div class="progress-item done"><div class="pi-icon">👤</div><div><div class="pi-label">Identificação</div><div class="pi-sub">João Silva · Op. Empilhadeira</div></div><div class="pi-check">✓</div></div>
-      <div class="progress-item done"><div class="pi-icon">👁️</div><div><div class="pi-label">Figura memorizada</div><div class="pi-sub">Figura #3 do dia</div></div><div class="pi-check">✓</div></div>
-      <div class="progress-item active"><div class="pi-icon">⚡</div><div><div class="pi-label">Teste cognitivo</div><div class="pi-sub">Em andamento · 12s</div></div></div>
-      <div class="progress-item"><div class="pi-icon">🧠</div><div><div class="pi-label">Questionário</div><div class="pi-sub">Aguardando</div></div></div>
-      <div class="progress-item"><div class="pi-icon">🚦</div><div><div class="pi-label">Resultado</div><div class="pi-sub">Aguardando</div></div></div>
+      <div class="progress-item done"><div class="pi-icon">01</div><div><div class="pi-label">Identificação</div><div class="pi-sub">João Silva · Op. Empilhadeira</div></div><div class="pi-check">✓</div></div>
+      <div class="progress-item done"><div class="pi-icon">02</div><div><div class="pi-label">Figura memorizada</div><div class="pi-sub">Figura #3 do dia</div></div><div class="pi-check">✓</div></div>
+      <div class="progress-item active"><div class="pi-icon">03</div><div><div class="pi-label">Teste cognitivo</div><div class="pi-sub">Em andamento · 12s</div></div></div>
+      <div class="progress-item"><div class="pi-icon">04</div><div><div class="pi-label">Questionário</div><div class="pi-sub">Aguardando</div></div></div>
+      <div class="progress-item"><div class="pi-icon">05</div><div><div class="pi-label">Resultado</div><div class="pi-sub">Aguardando</div></div></div>
       <div style="margin-top:24px;padding:16px;background:var(--teal)12;border-radius:12px;border:1px solid var(--teal)22;">
         <div style="font-size:11px;color:var(--teal);font-weight:700;letter-spacing:1px;margin-bottom:8px;">RESULTADO ANTERIOR</div>
         <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--gray2)">Ontem · 06:58</span><span style="color:var(--green);font-weight:700">✓ VERDE — Apto</span></div>
@@ -496,18 +519,18 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
   <h2 class="section-title reveal">O que o sistema <em>detecta</em></h2>
   <p class="section-desc reveal">Condições que comprometem a segurança e que passam invisíveis sem avaliação sistemática.</p>
   <div class="prediz-grid">
-    <div class="prediz-tag reveal"><span class="prediz-icon">😴</span><span class="prediz-label">Privação de sono</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">🥱</span><span class="prediz-label">Fadiga cognitiva</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">😰</span><span class="prediz-label">Estresse agudo</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">🍺</span><span class="prediz-label">Uso de substâncias</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">💊</span><span class="prediz-label">Efeito de medicamentos</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">😔</span><span class="prediz-label">Humor alterado</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">👨‍👩‍👧</span><span class="prediz-label">Conflito familiar</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">💸</span><span class="prediz-label">Pressão financeira</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">⚡</span><span class="prediz-label">Lentidão de reação</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">🎯</span><span class="prediz-label">Perda de foco</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">🤝</span><span class="prediz-label">Conflito no trabalho</span></div>
-    <div class="prediz-tag reveal"><span class="prediz-icon">🔥</span><span class="prediz-label">Indícios de burnout</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Privação de sono</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Fadiga cognitiva</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Estresse agudo</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Uso de substâncias</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Efeito de medicamentos</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Humor alterado</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Conflito familiar</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Pressão financeira</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Lentidão de reação</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Perda de foco</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Conflito no trabalho</span></div>
+    <div class="prediz-tag reveal"><span class="prediz-label">Indícios de burnout</span></div>
   </div>
 </section>
 
@@ -527,7 +550,6 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
 <!-- PRIVACIDADE -->
 <div class="privacy-band reveal">
   <div>
-    <div class="privacy-icon">🔒</div>
     <h2 class="privacy-title">Confidencialidade total do questionário</h2>
     <p style="color:var(--gray2);font-size:15px;max-width:560px;line-height:1.7;">O questionário psicossocial é voluntário e seus dados não são acessados pela supervisão ou gestão. As respostas vão diretamente ao psicólogo responsável, exclusivamente para cuidado com a saúde do colaborador.</p>
     <div class="privacy-items">
@@ -539,7 +561,9 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
     </div>
   </div>
   <div style="flex-shrink:0;text-align:center;">
-    <div style="width:140px;height:140px;border-radius:28px;background:var(--teal)15;border:2px solid var(--teal)33;display:flex;align-items:center;justify-content:center;font-size:64px;margin:0 auto;">🔒</div>
+    <div style="width:140px;height:140px;border-radius:28px;background:var(--teal)15;border:2px solid var(--teal)33;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+      <div style="font-family:'Fraunces',Georgia,serif;font-size:32px;font-weight:800;color:var(--teal);letter-spacing:2px;">LGPD</div>
+    </div>
     <div style="font-family:'Fraunces',Georgia,serif;font-size:13px;color:var(--teal);margin-top:12px;letter-spacing:1px;text-transform:uppercase;">LGPD Compliant</div>
   </div>
 </div>
@@ -550,12 +574,12 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
   <div class="section-divider reveal"></div>
   <h2 class="section-title reveal"><em>Diferenciais</em> do sistema</h2>
   <div class="diff-grid">
-    <div class="diff-card reveal"><div class="diff-icon">🧪</div><div class="diff-title">Base científica</div><div class="diff-desc">Metodologia fundamentada em neurociência cognitiva e instrumentos validados como COPSOQ, HSE-IT e ISO 45003.</div></div>
-    <div class="diff-card reveal"><div class="diff-icon">⚡</div><div class="diff-title">Menos de 3 minutos</div><div class="diff-desc">Avaliação completa em menos de 3 minutos. Sem impacto na produtividade, sem complexidade operacional.</div></div>
-    <div class="diff-card reveal"><div class="diff-icon">🌐</div><div class="diff-title">100% web</div><div class="diff-desc">Sem instalação. Roda em qualquer dispositivo: smartphone, tablet, totem ou desktop. Online e com fallback offline.</div></div>
-    <div class="diff-card reveal"><div class="diff-icon">📊</div><div class="diff-title">Dashboard em tempo real</div><div class="diff-desc">Visão panorâmica do turno com mapa de calor por área e equipe. Integração com Power BI, Tableau e outras ferramentas.</div></div>
-    <div class="diff-card reveal"><div class="diff-icon">🤝</div><div class="diff-title">Cultura de cuidado</div><div class="diff-desc">Posicionado como benefício ao colaborador, não como vigilância. Aumenta engajamento e adesão ao programa de segurança.</div></div>
-    <div class="diff-card reveal"><div class="diff-icon">🏢</div><div class="diff-title">Multi-empresa</div><div class="diff-desc">Arquitetura multi-tenant nativa. Cada empresa tem seu ambiente isolado com configurações e branding próprios.</div></div>
+    <div class="diff-card reveal"><div class="diff-title">Base científica</div><div class="diff-desc">Metodologia fundamentada em neurociência cognitiva e instrumentos validados como COPSOQ, HSE-IT e ISO 45003.</div></div>
+    <div class="diff-card reveal"><div class="diff-title">Menos de 3 minutos</div><div class="diff-desc">Avaliação completa em menos de 3 minutos. Sem impacto na produtividade, sem complexidade operacional.</div></div>
+    <div class="diff-card reveal"><div class="diff-title">100% web</div><div class="diff-desc">Sem instalação. Roda em qualquer dispositivo: smartphone, tablet, totem ou desktop. Online e com fallback offline.</div></div>
+    <div class="diff-card reveal"><div class="diff-title">Dashboard em tempo real</div><div class="diff-desc">Visão panorâmica do turno com mapa de calor por área e equipe. Integração com Power BI, Tableau e outras ferramentas.</div></div>
+    <div class="diff-card reveal"><div class="diff-title">Cultura de cuidado</div><div class="diff-desc">Posicionado como benefício ao colaborador, não como vigilância. Aumenta engajamento e adesão ao programa de segurança.</div></div>
+    <div class="diff-card reveal"><div class="diff-title">Multi-empresa</div><div class="diff-desc">Arquitetura multi-tenant nativa. Cada empresa tem seu ambiente isolado com configurações e branding próprios.</div></div>
   </div>
 </section>
 
@@ -565,9 +589,9 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
   <div class="section-divider reveal"></div>
   <h2 class="section-title reveal">Benefícios <em>concretos</em></h2>
   <div class="benefits-grid">
-    <div class="benefit-card reveal"><div class="benefit-num">1</div><div class="benefit-icon">🛡️</div><div class="benefit-title">Prevenção antes do acidente</div><div class="benefit-desc">Retira o colaborador em risco da operação antes de iniciar o turno, eliminando a exposição ao perigo de forma proativa e documentada.</div></div>
-    <div class="benefit-card reveal"><div class="benefit-num">2</div><div class="benefit-icon">💚</div><div class="benefit-title">Cuidado com a saúde mental</div><div class="benefit-desc">Identifica colaboradores que precisam de apoio psicológico antes que o sofrimento se torne um problema maior, fortalecendo o vínculo empresa–colaborador.</div></div>
-    <div class="benefit-card reveal"><div class="benefit-num">3</div><div class="benefit-icon">📋</div><div class="benefit-title">Conformidade e dados estratégicos</div><div class="benefit-desc">Gera evidências para o PGR conforme NR-1, reduz passivo trabalhista e fornece dados para decisões de gestão mais assertivas.</div></div>
+    <div class="benefit-card reveal"><div class="benefit-num">1</div><div class="benefit-title">Prevenção antes do acidente</div><div class="benefit-desc">Retira o colaborador em risco da operação antes de iniciar o turno, eliminando a exposição ao perigo de forma proativa e documentada.</div></div>
+    <div class="benefit-card reveal"><div class="benefit-num">2</div><div class="benefit-title">Cuidado com a saúde mental</div><div class="benefit-desc">Identifica colaboradores que precisam de apoio psicológico antes que o sofrimento se torne um problema maior, fortalecendo o vínculo empresa–colaborador.</div></div>
+    <div class="benefit-card reveal"><div class="benefit-num">3</div><div class="benefit-title">Conformidade e dados estratégicos</div><div class="benefit-desc">Gera evidências para o PGR conforme NR-1, reduz passivo trabalhista e fornece dados para decisões de gestão mais assertivas.</div></div>
   </div>
 </section>
 
@@ -593,23 +617,23 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
   <h2 class="section-title reveal">Funciona em <em>qualquer</em> dispositivo</h2>
   <p class="section-desc reveal">Sem hardware adicional. Sem instalação. Se tem tela e internet, o NEXFORMS Prontidão roda.</p>
   <div class="devices-grid">
-    <div class="device-card reveal"><div class="device-icon">📱</div><div class="device-name">Smartphone</div><div class="device-desc">Cada colaborador usa o próprio celular ou um aparelho compartilhado</div></div>
-    <div class="device-card reveal"><div class="device-icon">🖥️</div><div class="device-name">Totem / Tablet</div><div class="device-desc">Fixo na entrada da operação para uso rápido no início do turno</div></div>
-    <div class="device-card reveal"><div class="device-icon">💻</div><div class="device-name">Desktop</div><div class="device-desc">Integrado a estações de trabalho ou computadores do RH</div></div>
-    <div class="device-card reveal"><div class="device-icon">📊</div><div class="device-name">Dashboard Web</div><div class="device-desc">Gestão em tempo real acessível de qualquer lugar por gestores e psicólogos</div></div>
+    <div class="device-card reveal"><div class="device-name">Smartphone</div><div class="device-desc">Cada colaborador usa o próprio celular ou um aparelho compartilhado</div></div>
+    <div class="device-card reveal"><div class="device-name">Totem / Tablet</div><div class="device-desc">Fixo na entrada da operação para uso rápido no início do turno</div></div>
+    <div class="device-card reveal"><div class="device-name">Desktop</div><div class="device-desc">Integrado a estações de trabalho ou computadores do RH</div></div>
+    <div class="device-card reveal"><div class="device-name">Dashboard Web</div><div class="device-desc">Gestão em tempo real acessível de qualquer lugar por gestores e psicólogos</div></div>
   </div>
 </section>
 
 <!-- IMPLANTAÇÃO -->
 <section id="implantacao" class="impl-bg">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:52px;">
+  <div class="impl-intro-grid">
     <div>
       <div class="section-tag reveal">Implementação</div>
       <div class="section-divider reveal"></div>
       <h2 class="section-title reveal">Pronto em <em>dias</em>, não meses</h2>
       <p class="section-desc reveal">Processo de implantação simples e guiado pela equipe NEXFORMS. Sem necessidade de infraestrutura adicional — apenas conexão à internet.</p>
     </div>
-    <div class="reveal" style="border-radius:20px;overflow:hidden;border:1px solid var(--teal)22;">
+    <div class="reveal impl-intro-img" style="border-radius:20px;overflow:hidden;border:1px solid var(--teal)22;">
       <img src="https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=900&h=520&dpr=1"
         alt="Operador de empilhadeira com capacete e colete de segurança em armazém"
         style="width:100%;height:280px;object-fit:cover;object-position:center;filter:brightness(0.82) saturate(0.9);display:block;" loading="lazy"/>
@@ -635,8 +659,8 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
     <h2 class="reveal">Proteja seus colaboradores<br/><em>a partir de amanhã</em></h2>
     <p class="reveal">Solicite uma demonstração gratuita. Nossa equipe apresenta o sistema em funcionamento e elabora uma proposta personalizada para a sua operação.</p>
     <div class="cta-actions reveal">
-      <a href="https://wa.me/5521999999999" class="btn-primary" style="font-size:16px;padding:16px 32px;">💬 Falar no WhatsApp</a>
-      <a href="mailto:contato@nexforms.com.br" class="btn-outline" style="font-size:16px;padding:16px 28px;">✉ Enviar E-mail</a>
+      <a href="https://wa.me/5521999999999" class="btn-primary" style="font-size:16px;padding:16px 32px;">Falar no WhatsApp</a>
+      <a href="mailto:contato@nexforms.com.br" class="btn-outline" style="font-size:16px;padding:16px 28px;">Enviar E-mail</a>
     </div>
     <p style="font-size:12px;color:var(--gray);margin-top:24px;">¹ Baseado em estudos de sistemas similares de avaliação pré-jornada. Resultados podem variar.</p>
   </div>
@@ -676,7 +700,7 @@ footer{background:var(--navy2);border-top:1px solid #ffffff08;padding:60px 5% 32
   </div>
   <div class="footer-bottom">
     <p>© 2025 NEXFORMS · nexforms.com.br · Todos os direitos reservados.</p>
-    <p style="color:var(--teal);">Feito com ❤ no Brasil</p>
+    <p style="color:var(--teal);">Feito no Brasil</p>
   </div>
 </footer>
 
