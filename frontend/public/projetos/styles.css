@@ -463,6 +463,39 @@ footer p { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: v
   box-shadow: 0 6px 24px rgba(0,255,136,0.2);
 }
 
+/* Grupo de dois botões no verso do card (ex: Prontidão) */
+.card-btn-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.card-btn-group .card-access-btn { flex: 1; }
+
+.card-info-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: transparent;
+  color: var(--cyan);
+  text-decoration: none;
+  padding: 0.7rem 0.8rem;
+  border-radius: 3px;
+  border: 1px solid rgba(0,212,255,0.35);
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.card-info-btn:hover {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+}
+
 /* ── 11. MODAL MOBILE ── */
 .mobile-modal-overlay {
   position: fixed;
@@ -626,6 +659,33 @@ footer p { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: v
   justify-content: center;
 }
 .modal-access-btn:hover { background: var(--green); }
+
+/* Modal com dois botões */
+.modal-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.modal-info-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: transparent;
+  color: var(--cyan);
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border: 1px solid rgba(0,212,255,0.35);
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: background 0.2s, border-color 0.2s;
+  width: 100%;
+}
+.modal-info-btn:hover { background: var(--cyan-dim); border-color: var(--cyan); }
+
 .modal-access-note {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.62rem;

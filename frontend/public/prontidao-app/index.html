@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXFORMS Prontidão — Avaliação Pré-Jornada</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; }
+    body { background: #0d1b2a; color: #f0f4f8; font-family: 'Barlow', sans-serif; }
+    .back-btn {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 999;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #8fa3b1;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back-btn:hover { color: #f0f4f8; border-color: rgba(255,255,255,0.3); }
+  </style>
+</head>
+<body>
+  <a href="/projetos/" class="back-btn">← projetos</a>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    const G = {
+      navy: "#0d1b2a", navyLight: "#1a2e45", navyMid: "#162438",
+      yellow: "#f5c518", green: "#22c55e", red: "#ef4444",
+      amber: "#f59e0b", white: "#f0f4f8", gray: "#8fa3b1",
+      teal: "#0ea5e9",
+    };
+
+    const globalStyle = `
+      @keyframes fadeIn { from { opacity:0; transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+      @keyframes pulse { 0%,100%{transform:scale(1);}50%{transform:scale(1.04);} }
+      @keyframes flash { 0%{opacity:0;transform:scale(0.88);}15%{opacity:1;transform:scale(1.02);}85%{opacity:1;}100%{opacity:0;transform:scale(0.95);} }
+      @keyframes slideUp { from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);} }
+      .anim-fade { animation: fadeIn 0.45s ease both; }
+      .anim-slideup { animation: slideUp 0.5s ease both; }
+    `;
+
+    const FIGURES = [
+      [true,true,false,false],[false,false,true,true],[true,false,true,false],
+      [false,true,false,true],[true,false,false,true],[false,true,true,false],
+      [true,true,true,false],[false,true,true,true],
+    ];
+
+    function FigureGrid({ pattern, size=80, highlight=false, dimmed=false }) {
+      const cell = size/2-3;
+      return (
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,padding:6,
+          background:highlight?G.yellow+"22":"#ffffff08",border:`2px solid ${highlight?G.yellow:"#ffffff18"}`,
+          borderRadius:10,opacity:dimmed?0.35:1,transition:"all 0.15s",width:size+16,height:size+16}}>
+          {pattern.map((a,i)=>(
+            <div key={i} style={{width:cell,height:cell,borderRadius:5,
+              background:a?G.yellow:"#ffffff22",transition:"background 0.1s"}}/>
+          ))}
+        </div>
+      );
+    }
+
+    function ScreenID({ onStart }) {
+      const [name,setName]=useState("");
+      const [role,setRole]=useState("Operador de Empilhadeira");
+      const inputStyle = (active) => ({
+        width:"100%",padding:"14px 16px",background:G.navyLight,
+        border:`1.5px solid ${active?G.yellow:"#ffffff18"}`,borderRadius:10,
+        color:G.white,fontSize:16,outline:"none",fontFamily:"'Barlow',sans-serif",transition:"border-color 0.2s",
+      });
+      return (
+        <div className="anim-fade" style={{padding:"40px 24px",maxWidth:400,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:40}}>
+            <div style={{fontSize:13,letterSpacing:4,color:G.yellow,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,marginBottom:12,textTransform:"uppercase"}}>
+              Sistema de Segurança
+            </div>
+            <div style={{fontSize:42,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,lineHeight:1}}>
+              TESTE DE<br/><span style={{color:G.yellow}}>PRONTIDÃO</span>
+            </div>
+            <div style={{marginTop:12,color:G.gray,fontSize:14}}>Avaliação diária antes do início do turno</div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            <div>
+              <label style={{fontSize:12,color:G.gray,letterSpacing:1.5,textTransform:"uppercase",display:"block",marginBottom:8}}>Nome</label>
+              <input value={name} onChange={e=>setName(e.target.value)} placeholder="Ex: João Silva" style={inputStyle(name)}/>
+            </div>
+            <div>
+              <label style={{fontSize:12,color:G.gray,letterSpacing:1.5,textTransform:"uppercase",display:"block",marginBottom:8}}>Função</label>
+              <select value={role} onChange={e=>setRole(e.target.value)} style={{...inputStyle(false),appearance:"none"}}>
+                <option>Operador de Empilhadeira</option>
+                <option>Operador de Ponte Rolante</option>
+                <option>Movimentador de Cargas</option>
+                <option>Operador de Retroescavadeira</option>
+                <option>Supervisor</option>
+              </select>
+            </div>
+            <button onClick={()=>name.trim()&&onStart({name:name.trim(),role})} style={{
+              marginTop:8,padding:16,background:name.trim()?G.yellow:G.navyLight,
+              color:name.trim()?G.navy:G.gray,border:"none",borderRadius:10,fontSize:16,
+              fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,letterSpacing:2,
+              textTransform:"uppercase",cursor:name.trim()?"pointer":"default",transition:"all 0.2s",
+            }}>Iniciar Avaliação</button>
+          </div>
+          <div style={{marginTop:24,padding:16,background:G.navyLight,borderRadius:10,borderLeft:`3px solid ${G.yellow}`}}>
+            <div style={{fontSize:12,color:G.gray,lineHeight:1.7}}>
+              ⚠️ Este teste avalia suas condições de <strong style={{color:G.white}}>atenção, reação e bem-estar</strong> para garantir a segurança da operação.
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ScreenInstruction({ worker, targetIdx, onReady }) {
+      const target = FIGURES[targetIdx];
+      return (
+        <div className="anim-fade" style={{padding:"40px 24px",maxWidth:400,margin:"0 auto"}}>
+          <div style={{marginBottom:20}}>
+            <div style={{fontSize:13,color:G.yellow,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}}>
+              Olá, {worker.name.split(" ")[0]}
+            </div>
+            <div style={{fontSize:28,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,marginTop:4}}>PARTE 1 — TESTE DE ATENÇÃO</div>
+            <div style={{color:G.gray,fontSize:14,marginTop:6}}>Memorize a figura abaixo. Toque na tela toda vez que ela aparecer durante o teste.</div>
+          </div>
+          <div style={{display:"flex",justifyContent:"center",margin:"28px 0"}}>
+            <div style={{animation:"pulse 2s ease-in-out infinite"}}><FigureGrid pattern={target} size={110} highlight/></div>
+          </div>
+          <div style={{background:G.navyLight,borderRadius:12,padding:18,marginBottom:20}}>
+            {["Identifique e memorize a figura acima","Toque firme na tela quando ela aparecer","Use sua mão dominante para reagir","Dedo ~1cm de distância da tela","Realize com seriedade — 45 segundos"].map((t,i)=>(
+              <div key={i} style={{display:"flex",gap:10,marginBottom:8,alignItems:"flex-start"}}>
+                <div style={{width:20,height:20,borderRadius:"50%",background:G.yellow+"22",border:`1px solid ${G.yellow}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:G.yellow,flexShrink:0,marginTop:1}}>{i+1}</div>
+                <div style={{fontSize:14,color:G.gray,lineHeight:1.5}}>{t}</div>
+              </div>
+            ))}
+          </div>
+          <button onClick={onReady} style={{width:"100%",padding:16,background:G.yellow,color:G.navy,border:"none",borderRadius:10,fontSize:16,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,letterSpacing:2,textTransform:"uppercase",cursor:"pointer"}}>
+            Estou Pronto — Iniciar
+          </button>
+        </div>
+      );
+    }
+
+    const TEST_DURATION=45, FIG_MIN=900, FIG_MAX=2000, FIG_DUR=750;
+
+    function ScreenTest({ targetIdx, onFinish }) {
+      const [timeLeft,setTimeLeft]=useState(TEST_DURATION);
+      const [currentFig,setCurrentFig]=useState(null);
+      const [currentIsTarget,setCurrentIsTarget]=useState(false);
+      const [feedback,setFeedback]=useState(null);
+      const [stats,setStats]=useState({hits:0,misses:0,falseAlarms:0,reactionTimes:[]});
+      const [figKey,setFigKey]=useState(0);
+      const figTO=useRef(null), nextTO=useRef(null), figStart=useRef(null), figActive=useRef(false);
+      const statsRef=useRef(stats); statsRef.current=stats;
+
+      const showFB=(t)=>{setFeedback(t);setTimeout(()=>setFeedback(null),400);};
+
+      const scheduleNext=useCallback(()=>{
+        const delay=FIG_MIN+Math.random()*(FIG_MAX-FIG_MIN);
+        nextTO.current=setTimeout(()=>{
+          const isTarget=Math.random()<0.3;
+          let fi; if(isTarget){fi=targetIdx;}else{do{fi=Math.floor(Math.random()*FIGURES.length);}while(fi===targetIdx);}
+          setCurrentFig(FIGURES[fi]); setCurrentIsTarget(isTarget); setFigKey(k=>k+1);
+          figStart.current=Date.now(); figActive.current=true;
+          figTO.current=setTimeout(()=>{
+            if(figActive.current){figActive.current=false; if(isTarget){setStats(s=>({...s,misses:s.misses+1}));showFB("miss");}}
+            setCurrentFig(null); scheduleNext();
+          },FIG_DUR);
+        },delay);
+      },[targetIdx]);
+
+      useEffect(()=>{
+        scheduleNext();
+        const timer=setInterval(()=>{
+          setTimeLeft(t=>{
+            if(t<=1){clearInterval(timer);clearTimeout(figTO.current);clearTimeout(nextTO.current);setTimeout(()=>onFinish(statsRef.current),300);return 0;}
+            return t-1;
+          });
+        },1000);
+        return()=>{clearInterval(timer);clearTimeout(figTO.current);clearTimeout(nextTO.current);};
+      },[]);
+
+      const handleTap=()=>{
+        if(figActive.current){
+          const rt=Date.now()-figStart.current; figActive.current=false;
+          if(currentIsTarget){setStats(s=>({...s,hits:s.hits+1,reactionTimes:[...s.reactionTimes,rt]}));showFB("hit");}
+          else{setStats(s=>({...s,falseAlarms:s.falseAlarms+1}));showFB("false");}
+          clearTimeout(figTO.current); setCurrentFig(null); scheduleNext();
+        }
+      };
+
+      const circ=2*Math.PI*45;
+      return (
+        <div onClick={handleTap} style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"32px 24px 40px",userSelect:"none",background:feedback==="hit"?`${G.green}18`:feedback==="false"||feedback==="miss"?`${G.red}18`:G.navy,transition:"background 0.15s"}}>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
+            <svg width={100} height={100} style={{transform:"rotate(-90deg)"}}>
+              <circle cx={50} cy={50} r={45} fill="none" stroke={G.navyLight} strokeWidth={6}/>
+              <circle cx={50} cy={50} r={45} fill="none" stroke={timeLeft<10?G.red:G.yellow} strokeWidth={6} strokeDasharray={circ} strokeDashoffset={circ*(timeLeft/TEST_DURATION)} strokeLinecap="round" style={{transition:"stroke-dashoffset 1s linear,stroke 0.3s"}}/>
+              <text x={50} y={50} textAnchor="middle" dominantBaseline="central" style={{transform:"rotate(90deg)",transformOrigin:"50px 50px"}} fill={timeLeft<10?G.red:G.white} fontSize={26} fontFamily="'Barlow Condensed',sans-serif" fontWeight={800}>{timeLeft}</text>
+            </svg>
+            <div style={{fontSize:11,color:G.gray,letterSpacing:2,textTransform:"uppercase"}}>segundos</div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16}}>
+            <div style={{fontSize:12,color:G.gray,letterSpacing:3,textTransform:"uppercase"}}>Toque quando ver a figura correta</div>
+            <div style={{width:160,height:160,display:"flex",alignItems:"center",justifyContent:"center",background:G.navyLight,borderRadius:20,border:`2px solid ${currentFig?G.yellow+"44":"#ffffff10"}`}}>
+              {currentFig?(<div key={figKey} style={{animation:`flash ${FIG_DUR}ms ease both`}}><FigureGrid pattern={currentFig} size={110}/></div>):(<div style={{color:G.gray+"66",fontSize:32}}>···</div>)}
+            </div>
+            {feedback&&<div style={{padding:"8px 20px",borderRadius:20,background:feedback==="hit"?G.green+"33":G.red+"33",color:feedback==="hit"?G.green:G.red,fontSize:13,fontWeight:700,letterSpacing:2,fontFamily:"'Barlow Condensed',sans-serif",textTransform:"uppercase"}}>
+              {feedback==="hit"?"✓ Correto!":feedback==="false"?"✗ Figura errada":"✗ Perdeu"}
+            </div>}
+          </div>
+          <div style={{display:"flex",gap:24}}>
+            {[{l:"Acertos",v:stats.hits,c:G.green},{l:"Perdas",v:stats.misses,c:G.amber},{l:"Falsos",v:stats.falseAlarms,c:G.red}].map(s=>(
+              <div key={s.l} style={{textAlign:"center"}}>
+                <div style={{fontSize:26,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,color:s.c}}>{s.v}</div>
+                <div style={{fontSize:11,color:G.gray,letterSpacing:1,textTransform:"uppercase"}}>{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    const QUESTIONS = [
+      {id:"sleep",category:"😴 Sono",text:"Como foi sua noite de sono?",options:["Dormi bem, me sinto descansado","Dormi razoável, um pouco cansado","Dormi pouco, estou cansado","Quase não dormi, estou muito cansado"],scores:[0,1,2,3]},
+      {id:"mood",category:"🧠 Humor e Estado Emocional",text:"Como você está se sentindo emocionalmente hoje?",options:["Bem, animado e tranquilo","Normal, dentro do esperado","Um pouco ansioso ou irritado","Muito angustiado, triste ou irritado"],scores:[0,1,2,3]},
+      {id:"stress",category:"🧠 Humor e Estado Emocional",text:"Você está com algo pesado na cabeça que pode distrair sua atenção?",options:["Não, consigo focar normalmente","Um pouco, mas consigo trabalhar","Sim, está difícil me concentrar","Estou muito perturbado, difícil trabalhar"],scores:[0,1,2,3]},
+      {id:"family",category:"👨‍👩‍👧 Vida Familiar",text:"Como está a situação em casa / na família?",options:["Tranquila, sem problemas","Alguns desentendimentos pequenos","Conflito relevante me preocupando","Situação grave me causando sofrimento"],scores:[0,1,2,3]},
+      {id:"finance",category:"💰 Vida Financeira",text:"Suas preocupações financeiras estão afetando seu estado hoje?",options:["Não, estou tranquilo financeiramente","Um pouco, mas não me afeta muito","Sim, estou preocupado com dívidas/contas","Muito, estou em situação crítica"],scores:[0,1,2,3]},
+      {id:"health",category:"🏥 Saúde Física",text:"Você está sentindo algum desconforto físico hoje?",options:["Nenhum, estou bem fisicamente","Dor leve ou cansaço que não atrapalha","Dor ou mal-estar moderado","Dor intensa ou mal-estar grave"],scores:[0,1,2,3]},
+      {id:"meds",category:"🏥 Saúde Física",text:"Você tomou algum medicamento que pode causar sonolência ou alteração?",options:["Não tomei nada","Tomei, mas sem efeitos colaterais","Tomei e sinto alguma sonolência/tontura","Sim, com efeito forte — me sinto alterado"],scores:[0,1,2,3]},
+      {id:"substances",category:"⚠️ Substâncias",text:"Nas últimas 8 horas, você consumiu álcool ou outra substância?",options:["Não, nenhuma substância","Apenas medicamento prescrito pelo médico","Consumi álcool em quantidade pequena","Sim, em quantidade relevante"],scores:[0,2,3,3],sensitive:true},
+      {id:"workrelation",category:"🤝 Relações no Trabalho",text:"Como estão suas relações com colegas e liderança?",options:["Bem, sem conflitos","Pequenas diferenças, mas nada grave","Conflito relevante com colega ou gestor","Situação de conflito sério ou assédio"],scores:[0,1,2,3]},
+      {id:"workload",category:"⚙️ Condições de Trabalho",text:"Você sente que a carga de trabalho está adequada?",options:["Sim, dentro do que consigo fazer","Um pouco acima, mas consigo lidar","Alta, estou me sentindo sobrecarregado","Muito alta, estou esgotado"],scores:[0,1,2,3]},
+    ];
+
+    function PrivacyNotice({ onAccept, onSkip }) {
+      return (
+        <div className="anim-fade" style={{padding:"32px 24px",maxWidth:400,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:24}}>
+            <div style={{fontSize:40,marginBottom:12}}>🔒</div>
+            <div style={{fontSize:28,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800}}>PARTE 2 — BEM-ESTAR</div>
+            <div style={{fontSize:14,color:G.gray,marginTop:8}}>Questionário de fatores psicossociais</div>
+          </div>
+          <div style={{background:G.yellow+"18",border:`2px solid ${G.yellow}`,borderRadius:14,padding:16,marginBottom:16,textAlign:"center"}}>
+            <div style={{fontSize:15,fontWeight:700,color:G.yellow,marginBottom:6}}>✓ Participação voluntária</div>
+            <div style={{fontSize:13,color:G.gray,lineHeight:1.7}}>
+              Este questionário é <strong style={{color:G.white}}>totalmente opcional</strong>. Você pode respondê-lo ou pular sem nenhuma consequência.
+            </div>
+          </div>
+          <div style={{background:"#0ea5e911",border:`1.5px solid ${G.teal}`,borderRadius:14,padding:16,marginBottom:16}}>
+            <div style={{fontSize:13,fontWeight:700,color:G.teal,marginBottom:10}}>🔒 Confidencialidade garantida</div>
+            <div style={{fontSize:13,color:G.gray,lineHeight:1.8}}>
+              Suas respostas <strong style={{color:G.white}}>não são vistas pela supervisão</strong> nem pela gestão.<br/><br/>
+              Vão <strong style={{color:G.white}}>diretamente ao psicólogo</strong> da empresa.<br/><br/>
+              <strong style={{color:G.white}}>Não há punição</strong>. O objetivo é oferecer apoio a quem precisar.
+            </div>
+          </div>
+          <button onClick={onAccept} style={{width:"100%",padding:15,background:G.yellow,color:G.navy,border:"none",borderRadius:10,fontSize:15,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,letterSpacing:2,textTransform:"uppercase",cursor:"pointer",marginBottom:10}}>
+            Responder com Honestidade 🙏
+          </button>
+          <button onClick={onSkip} style={{width:"100%",padding:13,background:"transparent",color:G.gray,border:`1.5px solid ${G.gray}33`,borderRadius:10,fontSize:14,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:600,letterSpacing:1,textTransform:"uppercase",cursor:"pointer"}}>
+            Prefiro não responder agora
+          </button>
+        </div>
+      );
+    }
+
+    function ScreenQuestionnaire({ onFinish, onSkip }) {
+      const [step, setStep] = useState(-1);
+      const [answers, setAnswers] = useState({});
+      const [selected, setSelected] = useState(null);
+
+      if (step === -1) return <PrivacyNotice onAccept={() => setStep(0)} onSkip={onSkip} />;
+
+      const q = QUESTIONS[step];
+      const progress = (step / QUESTIONS.length) * 100;
+      const prevCategory = step > 0 ? QUESTIONS[step - 1].category : null;
+      const showCatHeader = q.category !== prevCategory;
+
+      const handleNext = () => {
+        if (selected === null) return;
+        const newAnswers = { ...answers, [q.id]: { answer: q.options[selected], score: q.scores[selected] } };
+        setAnswers(newAnswers);
+        if (step < QUESTIONS.length - 1) { setStep(step + 1); setSelected(null); }
+        else { onFinish(newAnswers); }
+      };
+
+      return (
+        <div className="anim-fade" style={{padding:"28px 24px",maxWidth:400,margin:"0 auto"}}>
+          <div style={{marginBottom:24}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+              <div style={{fontSize:12,color:G.gray,letterSpacing:2,textTransform:"uppercase"}}>Pergunta {step+1} de {QUESTIONS.length}</div>
+              <div style={{fontSize:12,color:G.yellow,fontWeight:600}}>{Math.round(progress)}%</div>
+            </div>
+            <div style={{height:4,background:G.navyLight,borderRadius:2}}>
+              <div style={{height:"100%",background:G.yellow,borderRadius:2,width:`${progress}%`,transition:"width 0.4s ease"}}/>
+            </div>
+          </div>
+          {showCatHeader && (
+            <div style={{fontSize:13,color:G.teal,letterSpacing:2,textTransform:"uppercase",fontWeight:700,marginBottom:16,padding:"8px 12px",background:G.teal+"11",borderRadius:8,borderLeft:`3px solid ${G.teal}`}}>
+              {q.category}
+            </div>
+          )}
+          <div style={{fontSize:18,fontWeight:600,lineHeight:1.5,marginBottom:8}}>{q.text}</div>
+          {q.sensitive && (
+            <div style={{fontSize:12,color:G.teal,marginBottom:16,padding:"8px 12px",background:G.teal+"11",borderRadius:8}}>
+              🔒 Esta resposta é estritamente confidencial e não gera nenhuma consequência disciplinar.
+            </div>
+          )}
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginTop:16,marginBottom:28}}>
+            {q.options.map((opt,i)=>{
+              const isSelected = selected===i;
+              const scoreColor = q.scores[i]===0?G.green:q.scores[i]===1?G.amber:G.red;
+              return (
+                <button key={i} onClick={()=>setSelected(i)} style={{
+                  padding:"14px 16px",background:isSelected?scoreColor+"22":G.navyLight,
+                  border:`1.5px solid ${isSelected?scoreColor:"#ffffff18"}`,borderRadius:10,
+                  color:isSelected?G.white:G.gray,fontSize:14,textAlign:"left",cursor:"pointer",
+                  fontFamily:"'Barlow',sans-serif",lineHeight:1.4,transition:"all 0.2s",fontWeight:isSelected?600:400,
+                }}>
+                  <span style={{color:isSelected?scoreColor:G.gray+"88",marginRight:10,fontSize:13}}>
+                    {isSelected?"●":"○"}
+                  </span>
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+          <div style={{display:"flex",gap:10}}>
+            {step > 0 && (
+              <button onClick={()=>{setStep(step-1);setSelected(null);}} style={{padding:"14px 20px",background:"transparent",color:G.gray,border:`1.5px solid ${G.gray}44`,borderRadius:10,fontSize:14,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",cursor:"pointer"}}>
+                ← Voltar
+              </button>
+            )}
+            <button onClick={handleNext} disabled={selected===null} style={{flex:1,padding:14,background:selected!==null?G.yellow:G.navyLight,color:selected!==null?G.navy:G.gray,border:"none",borderRadius:10,fontSize:15,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,letterSpacing:2,textTransform:"uppercase",cursor:selected!==null?"pointer":"default",transition:"all 0.2s"}}>
+              {step<QUESTIONS.length-1?"Próxima →":"Concluir ✓"}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function ScreenResult({ worker, testStats, questionStats, onRetry, onDashboard }) {
+      const { hits, misses, falseAlarms, reactionTimes } = testStats;
+      const total = hits + misses;
+      const accuracy = total > 0 ? Math.round((hits / total) * 100) : 0;
+      const avgRT = reactionTimes.length > 0 ? Math.round(reactionTimes.reduce((a,b)=>a+b,0)/reactionTimes.length) : 999;
+      const cogScore = Math.max(0, accuracy - falseAlarms * 10 - (avgRT > 600 ? 15 : avgRT > 450 ? 5 : 0));
+      const skipped = !questionStats;
+      const psyTotal = questionStats ? Object.values(questionStats).reduce((a,v)=>a+v.score,0) : 0;
+      const psyMax = QUESTIONS.length * 3;
+      const psyScore = questionStats ? Math.round((1 - psyTotal / psyMax) * 100) : null;
+      const substanceAlert = questionStats?.substances?.score >= 2;
+      const combinedScore = psyScore !== null ? cogScore * 0.6 + psyScore * 0.4 : cogScore;
+
+      let level, color, label, desc;
+      if (substanceAlert || combinedScore < 40) {
+        level="VERMELHO"; color=G.red;
+        label=substanceAlert?"Não Apto — Alerta de Substância":"Não Apto — Afastamento";
+        desc=substanceAlert?"Possível uso de substância identificado. Comunique ao supervisor e procure o psicólogo da empresa.":"Resultado abaixo do esperado. Não inicie a operação. Fale com o supervisor e busque apoio.";
+      } else if (combinedScore < 65) {
+        level="AMARELO"; color=G.amber;
+        label="Atenção Recomendada";
+        desc="Você apresentou fatores de risco moderados. Supervisão reforçada recomendada. Caso precise, fale com o psicólogo da empresa.";
+      } else {
+        level="VERDE"; color=G.green;
+        label="Apto para Operar";
+        desc="Suas condições cognitivas e de bem-estar estão adequadas para o turno. Bom trabalho!";
+      }
+
+      const now = new Date();
+      const timestamp = `${now.toLocaleDateString("pt-BR")} às ${now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
+      const alerts = questionStats ? Object.entries(questionStats).filter(([,v])=>v.score>=2).map(([k,v])=>{
+        const q = QUESTIONS.find(q=>q.id===k);
+        return {category: q?.category, answer: v.answer};
+      }) : [];
+
+      return (
+        <div className="anim-fade" style={{padding:"28px 24px",maxWidth:400,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:24}}>
+            <div style={{width:80,height:80,borderRadius:"50%",background:color+"22",border:`3px solid ${color}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:32,margin:"0 auto 14px",color}}>
+              {level==="VERDE"?"✓":level==="AMARELO"?"⚠":"✕"}
+            </div>
+            <div style={{fontSize:11,letterSpacing:4,color,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,textTransform:"uppercase"}}>Nível {level}</div>
+            <div style={{fontSize:26,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,marginTop:4}}>{label}</div>
+            <div style={{color:G.gray,fontSize:13,marginTop:8,lineHeight:1.5}}>{desc}</div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+            {[
+              {label:"Atenção",value:`${accuracy}%`,sub:`${hits}/${total} acertos`,color:accuracy>=70?G.green:accuracy>=50?G.amber:G.red},
+              {label:"Reação",value:avgRT<900?`${avgRT}ms`:"—",sub:avgRT<350?"Ótimo":avgRT<500?"Bom":"Lento",color:avgRT<350?G.green:avgRT<500?G.amber:G.red},
+              {label:"Bem-estar",value:skipped?"—":`${psyScore}%`,sub:skipped?"Não respondeu":`${psyTotal} pts de risco`,color:skipped?G.gray:psyScore>=70?G.green:psyScore>=50?G.amber:G.red},
+              {label:"Falsos/Perdas",value:`${falseAlarms+misses}`,sub:`${falseAlarms} falsos · ${misses} perdas`,color:falseAlarms+misses===0?G.green:falseAlarms+misses<=2?G.amber:G.red},
+            ].map(m=>(
+              <div key={m.label} style={{background:G.navyLight,borderRadius:10,padding:"12px 14px"}}>
+                <div style={{fontSize:22,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,color:m.color}}>{m.value}</div>
+                <div style={{fontSize:12,fontWeight:600,color:G.white,marginTop:2}}>{m.label}</div>
+                <div style={{fontSize:11,color:G.gray}}>{m.sub}</div>
+              </div>
+            ))}
+          </div>
+          {alerts.length > 0 && (
+            <div style={{background:G.navyLight,borderRadius:12,padding:16,marginBottom:16}}>
+              <div style={{fontSize:12,color:G.amber,letterSpacing:2,textTransform:"uppercase",fontWeight:700,marginBottom:10}}>⚠ Fatores de atenção identificados</div>
+              {alerts.map((a,i)=>(
+                <div key={i} style={{fontSize:13,color:G.gray,padding:"6px 0",borderBottom:i<alerts.length-1?`1px solid #ffffff08`:"",lineHeight:1.4}}>
+                  <span style={{color:G.white,fontWeight:600}}>{a.category}:</span> {a.answer}
+                </div>
+              ))}
+              <div style={{marginTop:12,fontSize:12,color:G.teal,padding:"8px 10px",background:G.teal+"11",borderRadius:6}}>
+                🔒 Estas informações são enviadas apenas ao psicólogo da empresa.
+              </div>
+            </div>
+          )}
+          <div style={{background:G.navyLight,borderRadius:10,padding:"12px 16px",marginBottom:20,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div>
+              <div style={{fontSize:13,fontWeight:600}}>{worker.name}</div>
+              <div style={{fontSize:12,color:G.gray}}>{worker.role}</div>
+            </div>
+            <div style={{textAlign:"right"}}>
+              <div style={{fontSize:11,color:G.gray}}>{timestamp}</div>
+              <div style={{fontSize:12,color,fontWeight:700,marginTop:2}}>● {level}</div>
+            </div>
+          </div>
+          <div style={{display:"flex",gap:10}}>
+            <button onClick={onRetry} style={{flex:1,padding:14,background:"transparent",color:G.gray,border:`1.5px solid ${G.gray}44`,borderRadius:10,fontSize:14,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",cursor:"pointer"}}>
+              Refazer
+            </button>
+            <button onClick={onDashboard} style={{flex:2,padding:14,background:G.yellow,color:G.navy,border:"none",borderRadius:10,fontSize:14,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,letterSpacing:1.5,textTransform:"uppercase",cursor:"pointer"}}>
+              Ver Dashboard
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    const MOCK = [
+      {name:"João Silva",role:"Op. Empilhadeira",level:"VERDE",accuracy:92,rt:312,psy:88,time:"07:02"},
+      {name:"Carlos Mota",role:"Op. Empilhadeira",level:"AMARELO",accuracy:61,rt:520,psy:55,time:"07:08",alerts:["Sono: Dormi pouco","Humor: Ansioso"]},
+      {name:"Fernanda Cruz",role:"Mov. de Cargas",level:"VERDE",accuracy:88,rt:290,psy:92,time:"07:10"},
+      {name:"André Lima",role:"Op. Ponte Rolante",level:"VERMELHO",accuracy:38,rt:780,psy:30,time:"07:15",alerts:["Substância: consumo de álcool","Humor: Muito angustiado"]},
+      {name:"Patrícia Nunes",role:"Mov. de Cargas",level:"VERDE",accuracy:95,rt:270,psy:85,time:"07:18"},
+    ];
+    const lc={VERDE:G.green,AMARELO:G.amber,VERMELHO:G.red};
+
+    function ScreenDashboard({ onBack }) {
+      const counts={VERDE:0,AMARELO:0,VERMELHO:0};
+      MOCK.forEach(r=>counts[r.level]++);
+      return (
+        <div style={{padding:"28px 24px",maxWidth:480,margin:"0 auto"}}>
+          <div className="anim-fade" style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
+            <button onClick={onBack} style={{background:"none",border:"none",color:G.yellow,cursor:"pointer",fontSize:22,padding:4}}>←</button>
+            <div>
+              <div style={{fontSize:11,color:G.gray,letterSpacing:3,textTransform:"uppercase"}}>Turno de hoje</div>
+              <div style={{fontSize:26,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800}}>DASHBOARD</div>
+            </div>
+          </div>
+          <div className="anim-fade" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:24}}>
+            {[["VERDE","Aptos"],["AMARELO","Atenção"],["VERMELHO","Afastados"]].map(([lv,lb])=>(
+              <div key={lv} style={{background:G.navyLight,borderRadius:12,padding:"14px 10px",textAlign:"center",borderTop:`3px solid ${lc[lv]}`}}>
+                <div style={{fontSize:32,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:800,color:lc[lv]}}>{counts[lv]}</div>
+                <div style={{fontSize:11,color:G.gray}}>{lb}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{fontSize:11,color:G.gray,letterSpacing:3,textTransform:"uppercase",marginBottom:12}}>Colaboradores avaliados</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+            {MOCK.map((r,i)=>(
+              <div key={i} className="anim-slideup" style={{animationDelay:`${i*80}ms`,background:G.navyLight,borderRadius:12,padding:"14px 16px",borderLeft:`3px solid ${lc[r.level]}`}}>
+                <div style={{display:"flex",alignItems:"center",gap:12}}>
+                  <div style={{width:36,height:36,borderRadius:"50%",background:lc[r.level]+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,color:lc[r.level],fontWeight:700,flexShrink:0}}>{r.name[0]}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:14,fontWeight:600}}>{r.name}</div>
+                    <div style={{fontSize:12,color:G.gray}}>{r.role} · {r.time}</div>
+                  </div>
+                  <div style={{textAlign:"right"}}>
+                    <div style={{fontSize:12,color:lc[r.level],fontWeight:700}}>● {r.level}</div>
+                    <div style={{fontSize:11,color:G.gray}}>Cog:{r.accuracy}% · Psico:{r.psy}%</div>
+                  </div>
+                </div>
+                {r.alerts && (
+                  <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #ffffff08"}}>
+                    <div style={{fontSize:11,color:G.amber,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>⚠ Fatores de atenção (visível só ao psicólogo)</div>
+                    {r.alerts.map((a,j)=><div key={j} style={{fontSize:12,color:G.gray}}>· {a}</div>)}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div style={{padding:"14px 16px",background:G.navyLight,borderRadius:10,borderLeft:`3px solid ${G.teal}`}}>
+            <div style={{fontSize:12,color:G.teal,fontWeight:700,marginBottom:4}}>🔒 Aviso de privacidade</div>
+            <div style={{fontSize:12,color:G.gray,lineHeight:1.6}}>Os detalhes do questionário psicossocial são visíveis apenas ao psicólogo responsável. A supervisão vê somente o nível de prontidão (Verde/Amarelo/Vermelho).</div>
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [screen,setScreen]=useState("id");
+      const [worker,setWorker]=useState(null);
+      const [targetIdx]=useState(()=>Math.floor(Math.random()*FIGURES.length));
+      const [testStats,setTestStats]=useState(null);
+      const [questionStats,setQuestionStats]=useState(null);
+
+      return (
+        <div style={{minHeight:"100vh",background:G.navy,color:G.white,paddingTop:"48px"}}>
+          <style>{globalStyle}</style>
+          {screen==="id"&&<ScreenID onStart={w=>{setWorker(w);setScreen("instruction");}}/>}
+          {screen==="instruction"&&<ScreenInstruction worker={worker} targetIdx={targetIdx} onReady={()=>setScreen("test")}/>}
+          {screen==="test"&&<ScreenTest targetIdx={targetIdx} onFinish={s=>{setTestStats(s);setScreen("questionnaire");}}/>}
+          {screen==="questionnaire"&&<ScreenQuestionnaire onFinish={q=>{setQuestionStats(q);setScreen("result");}} onSkip={()=>{setQuestionStats(null);setScreen("result");}}/>}
+          {screen==="result"&&<ScreenResult worker={worker} testStats={testStats} questionStats={questionStats} onRetry={()=>{setTestStats(null);setQuestionStats(null);setScreen("instruction");}} onDashboard={()=>setScreen("dashboard")}/>}
+          {screen==="dashboard"&&<ScreenDashboard onBack={()=>setScreen("result")}/>}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
